@@ -1,0 +1,13 @@
+.links-container {
+  margin-right: 10px !important;
+  color: white;
+  text-decoration: none;
+}
+.links-container:hover,
+.links-container:active {
+  text-decoration: none;
+  color: grey;
+}
+.active {
+  color: grey;
+}
