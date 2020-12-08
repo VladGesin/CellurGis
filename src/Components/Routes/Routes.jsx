@@ -6,7 +6,7 @@ import MainPage from '../MainPage/MainPage'
 
 const routesData =[
   {component: MainPage,path:"/" ,exact: true},
-  {component: Mappage,path:"/Mappage"},
+  {component: Mappage ,path:"/Mappage"},
   {component: Workspace,path:"/Workspace"}
 ];
 
