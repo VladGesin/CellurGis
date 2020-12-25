@@ -4,10 +4,15 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css';
 import '../../leaflet/leaflet.css';
 
-class Mappage extends React.Component {
+class Mappage extends Component {
+
+  state={
+      name:'',
+      long:'',
+      lat:''
+  }
 
     componentDidMount() {
-      const position =[31.78243420864201 ,35.19937992095948 ]
         var map = this.map = L.map(ReactDOM.findDOMNode(this), 
         {
             minZoom: 8,
@@ -24,19 +29,23 @@ class Mappage extends React.Component {
         });
         
         map.on('click', this.onMapClick);
-        map.fitWorld();
-        map.addEventListener('mousemove', function(ev) {
-          var lat, lng;
-          lat = ev.latlng.lat;
-          lng = ev.latlng.lng;
-          console.log(lat,lng)
-       });
-        var latLon = L.latLng(31.674421266955243, 34.9713546037674);
-        var bounds = latLon.toBounds(1000000); // 500 = metres
-        map.panTo(latLon).fitBounds(bounds);
+        map.fitWorld()
+        map.on('mousemove',this.onMousemove);
+        this.onLoadMap(map);
     }
 
- 
+    onLoadMap=(map)=>{
+        var latLon = L.latLng(31.674421266955243, 34.9713546037674);
+        var bounds = latLon.toBounds(1000000); // 500 = metres
+        map.panTo(latLon).fitBounds(bounds); 
+    }
+
+    onMousemove=(ev)=>{
+        var lat, lng;
+        lat = ev.latlng.lat;
+        lng = ev.latlng.lng;
+        console.log(lat,lng)
+    }
 
     onMapClick = () => {
         // Do some wonderful map things...
