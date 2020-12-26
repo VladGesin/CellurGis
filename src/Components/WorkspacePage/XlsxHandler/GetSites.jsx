@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-export default function GetSites({ table, setSiteArr, siteArr }) {
+export default function GetSites({ table, setSiteArr }) {
 	let siteList = [];
 	useEffect(
 		() => {
@@ -12,6 +12,7 @@ export default function GetSites({ table, setSiteArr, siteArr }) {
 		if (table.rows != null) {
 			table.rows.map((row) => {
 				if (!siteList.includes(row[4])) {
+					// console.log(row[4]);
 					siteList.push(row[4]);
 				}
 			});

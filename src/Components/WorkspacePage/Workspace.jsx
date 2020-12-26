@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import Openfile from './Openfile';
-import GetSites from './GetSites';
+import Openfile from './XlsxHandler/Openfile';
+import GetSites from './XlsxHandler/GetSites';
+import ImportDB from './XlsxHandler/ImportDB';
+import Charts from './Charts/Charts';
 
 const Workspace = () => {
 	const [ table, setTable ] = useState({ cols: null, rows: null });
@@ -9,9 +11,9 @@ const Workspace = () => {
 	return (
 		<div>
 			<Openfile setTable={setTable} />
-			<GetSites table={table} setSiteArr={setSiteArr} siteArr={siteArr} />
-			{table && console.log(table)}
-			{siteArr && console.log(siteArr)}
+			<GetSites table={table} setSiteArr={setSiteArr} />
+			{/* <ImportDB /> */}
+			<Charts siteArr={siteArr} table={table} />
 		</div>
 	);
 };
