@@ -1,13 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const MainPage= () =>{
-  
-    return (
-      <div>
-        <h1>MainPage</h1>
-      </div>
-    )
-  }
+const MainPage = () => {
+	return (
+		<div>
+			<h1>MainPage</h1>
+		</div>
+	);
+};
 
-
-export default MainPage
+export default MainPage;
