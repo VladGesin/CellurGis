@@ -50,7 +50,7 @@ export default function Charts({ siteArr, table }) {
 	};
 	return (
 		<div>
-			<ChartArr setCharts={setCharts} siteChart={siteChart} siteArr={siteArr} table={table} />
+			<ChartArr setCharts={setCharts} siteArr={siteArr} table={table} />
 			{showData &&
 				siteChart.map((site) => {
 					return (
