@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { ExcelRenderer } from 'react-excel-renderer';
+import XLSX from 'xlsx';
 
 const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport }) => {
 	useEffect(
@@ -18,6 +19,7 @@ const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport
 			if (err) {
 				console.log(err);
 			} else {
+				console.log(resp.rows);
 				setTable({
 					cols: resp.cols,
 					rows: resp.rows

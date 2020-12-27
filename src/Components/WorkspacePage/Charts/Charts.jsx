@@ -22,12 +22,10 @@ export default function Charts({ siteArr, table, siteChart, setCharts, setShowIm
 
 	useEffect(
 		() => {
-			console.log(key);
 			if (key == 1) {
 				setShowData(false);
 				setCharts([]);
 				setShowImport(true);
-				console.log('Enter Close Data');
 			}
 		},
 		[ key ]

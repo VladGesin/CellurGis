@@ -9,7 +9,8 @@ const Navbarcomponent = () => {
 		<div>
 			<Navbar bg="dark" variant="dark">
 				<Navbar.Brand href="/">
-					<img alt="" src={NavLogo} width="30" height="30" className="d-inline-block align-top" /> Storm
+					{/* <img alt="" src={NavLogo} width="30" height="30" className="d-inline-block align-top" /> Storm */}
+					Storm
 				</Navbar.Brand>
 				<Nav>
 					<NavLink to="/Workspace" activeClassName="active" className=" links-container">
@@ -19,11 +20,6 @@ const Navbarcomponent = () => {
 						{' '}
 						Map
 					</NavLink>
-					{/* <NavDropdown title="מחלקות" id="basic-nav-dropdown" dir="rtl" className=''>
-        <NavDropdown.Item href="#action/3.1">צוות RF</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.2">הנדסה</NavDropdown.Item>
-        <NavDropdown.Item href="#action/3.3">מנויים</NavDropdown.Item>    
-      </NavDropdown> */}
 				</Nav>
 			</Navbar>
 		</div>
