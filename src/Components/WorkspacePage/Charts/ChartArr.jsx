@@ -1,3 +1,4 @@
+import { Label } from 'bizcharts';
 import React, { useState, useEffect } from 'react';
 
 export default function ChartArr({ setCharts, siteArr, table }) {
@@ -21,11 +22,12 @@ export default function ChartArr({ setCharts, siteArr, table }) {
 			Latitude: 31.908861
 		}
 	];
-	const [ siteChar, setSiteChar ] = useState([]);
+	const [ siteCharts, setSiteChart ] = useState([]);
+
 	useEffect(
 		() => {
-			setSiteChar([]);
 			ChartParsh();
+			setSiteChart([]);
 		},
 		[ siteArr ]
 	);
@@ -45,13 +47,88 @@ export default function ChartArr({ setCharts, siteArr, table }) {
 		return dist;
 	};
 
+	//Make the arr to parsh
+	const ArrParsh = (arr) => {
+		arr.forEach((row) => {
+			let temp = {
+				lable: [],
+				max: [],
+				min: [],
+				counter: [],
+				avg: [],
+				counter92: []
+			};
+
+			row.lables.forEach((lable) => {
+				//Reset values i need to find
+				let min = 0;
+				let max = 0;
+				let counter = 0;
+				let counter92 = 0;
+				let sum = 0;
+				let avg = 0;
+				for (let i = 0; i < row.data.length; i++) {
+					if (row.lable[i] === lable) {
+						//Get the first values in the start of the lables
+						if (min === 0 && max === 0) {
+							min = row.data[i];
+							max = row.data[i];
+						}
+						if (row.data[i] > max) max = row.data[i];
+						if (row.data[i] < min) min = row.data[i];
+						if (row.data[i] > -92) counter92++;
+						counter++;
+						sum += row.data[i];
+					}
+				}
+				avg = parseInt(sum / counter.toFixed(0));
+				console.log(
+					`
+          site: ${row.site}
+          KM: ${lable}
+          min: ${min} 
+          max: ${max} 
+          counter: ${counter}
+          sum: ${sum}
+          avg: ${avg} 
+          counter92: ${counter92}
+          `
+				);
+				//Here need to push to arr
+				// temp.push({
+				// 	lable: lable,
+				// 	min: min,
+				// 	max: max,
+				// 	counter: counter,
+				// 	avg: avg,
+				// 	counter92: counter92
+				// });
+				temp.lable.push(lable);
+				temp.min.push(min);
+				temp.max.push(max);
+				temp.counter.push(counter);
+				temp.avg.push(avg);
+				temp.counter92.push(counter92);
+				console.log(temp);
+			});
+			siteCharts.push({
+				site: row.site,
+				data: temp
+			});
+		});
+		console.log(siteCharts);
+		setCharts(siteCharts);
+	};
+
 	//Make the var to the Charts
 	const ChartParsh = () => {
+		let siteChar = [];
 		if (siteArr.length > 0) {
 			siteArr.forEach((site) => {
 				let temp = {
 					data: [],
-					lable: []
+					lable: [],
+					lables: []
 				};
 				let idex = 0;
 				var dist = 0;
@@ -65,18 +142,23 @@ export default function ChartArr({ setCharts, siteArr, table }) {
 						});
 						dist = CalcDist(row[0], row[1], SiteDB[idex].Latitude, SiteDB[idex].Longitude); //calc dist
 						row.push(dist.toFixed(0)); //push dist
-						temp.data.push(row[3].toFixed(0));
-						temp.lable.push(dist.toFixed(0) + 'km');
+						temp.data.push(parseInt(row[3].toFixed(0)));
+						temp.lable.push(parseInt(dist.toFixed(0)));
+						if (!temp.lables.includes(parseInt(dist.toFixed(0))))
+							temp.lables.push(parseInt(dist.toFixed(0))); //Get unic lables
 					}
 				});
+
 				siteChar.push({
 					site: site,
 					data: temp.data,
-					lable: temp.lable
+					lable: temp.lable,
+					lables: temp.lables
 				});
-			});
+			}); //make the chart data from the table
+
+			ArrParsh(siteChar);
 		}
-		setCharts(siteChar);
 	};
 
 	return <div />;

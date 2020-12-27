@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ChartArr from './ChartArr';
-import { Line } from 'react-chartjs-2';
+import { Line, Bar } from 'react-chartjs-2';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 
-export default function Charts({ siteArr, table }) {
-	const [ siteChart, setCharts ] = useState({
-		site: '',
-		data: [],
-		lable: []
-	});
+export default function Charts({ siteArr, table, siteChart, setCharts }) {
+	// const [ siteChart, setCharts ] = useState([]);
 	const [ showData, setShowData ] = useState(false);
 
 	useEffect(
@@ -19,29 +17,44 @@ export default function Charts({ siteArr, table }) {
 		[ siteChart ]
 	);
 
-	const MakeData = (site) => {
+	//Make charts
+
+	const MakeLine = (site) => {
 		const temp = {
-			labels: site.lable,
+			labels: site.data.lable,
 			datasets: [
 				{
-					label: `SiteID: ${site.site}`,
-					data: site.data,
-					lineTension: 0.1,
-					backgroundColor: 'rgba(75,192,192,0.4)',
-					borderColor: 'rgba(75,192,192,1)',
-					borderCapStyle: 'butt',
-					borderDash: [],
-					borderDashOffset: 0.0,
-					borderJoinStyle: 'miter',
-					pointBorderColor: 'rgba(75,192,192,1)',
-					pointBackgroundColor: '#fff',
-					pointBorderWidth: 1,
-					pointHoverRadius: 5,
-					pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-					pointHoverBorderColor: 'rgba(220,220,220,1)',
-					pointHoverBorderWidth: 2,
-					pointRadius: 3,
-					pointHitRadius: 10,
+					label: 'RSRP max',
+					data: site.data.max,
+					fill: false // disables bezier curves
+				},
+				{
+					label: 'RSRP min',
+					data: site.data.min,
+					fill: false // disables bezier curves
+				},
+				{
+					label: 'RSRP avg',
+					data: site.data.avg,
+					fill: false // disables bezier curves
+				}
+			]
+		};
+		return temp;
+	};
+
+	const MakeBar = (site) => {
+		const temp = {
+			labels: site.data.lable,
+			datasets: [
+				{
+					label: 'Counter Points',
+					data: site.data.counter,
+					fill: false // disables bezier curves
+				},
+				{
+					label: 'Greater than 92',
+					data: site.data.counter92,
 					fill: false // disables bezier curves
 				}
 			]
@@ -51,14 +64,18 @@ export default function Charts({ siteArr, table }) {
 	return (
 		<div>
 			<ChartArr setCharts={setCharts} siteArr={siteArr} table={table} />
-			{showData &&
-				siteChart.map((site) => {
-					return (
-						<div key={site.site}>
-							<Line data={MakeData(site)} width={100} height={20} />
-						</div>
-					);
-				})}
+			<Tabs transition={false} id="noanim-tab-example">
+				{showData &&
+					siteChart.map((site) => {
+						return (
+							<Tab eventKey={site.site} title={site.site} key={site.site}>
+								<Line data={MakeLine(site)} width={100} height={20} />
+								<Bar data={MakeBar(site)} width={100} height={20} />
+							</Tab>
+						);
+					})}
+				<Tab eventKey="Clean" title="Clean" />
+			</Tabs>
 		</div>
 	);
 }

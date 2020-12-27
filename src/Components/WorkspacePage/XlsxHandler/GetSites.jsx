@@ -12,7 +12,6 @@ export default function GetSites({ table, setSiteArr }) {
 		if (table.rows != null) {
 			table.rows.map((row) => {
 				if (!siteList.includes(row[4])) {
-					// console.log(row[4]);
 					siteList.push(row[4]);
 				}
 			});
