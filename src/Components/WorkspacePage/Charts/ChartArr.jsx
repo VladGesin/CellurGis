@@ -82,18 +82,18 @@ export default function ChartArr({ setCharts, siteArr, table }) {
 					}
 				}
 				avg = parseInt(sum / counter.toFixed(0));
-				console.log(
-					`
-          site: ${row.site}
-          KM: ${lable}
-          min: ${min} 
-          max: ${max} 
-          counter: ${counter}
-          sum: ${sum}
-          avg: ${avg} 
-          counter92: ${counter92}
-          `
-				);
+				// console.log(
+				// 	`
+				//   site: ${row.site}
+				//   KM: ${lable}
+				//   min: ${min}
+				//   max: ${max}
+				//   counter: ${counter}
+				//   sum: ${sum}
+				//   avg: ${avg}
+				//   counter92: ${counter92}
+				//   `
+				// );
 				//Here need to push to arr
 				// temp.push({
 				// 	lable: lable,
@@ -109,14 +109,12 @@ export default function ChartArr({ setCharts, siteArr, table }) {
 				temp.counter.push(counter);
 				temp.avg.push(avg);
 				temp.counter92.push(counter92);
-				console.log(temp);
 			});
 			siteCharts.push({
 				site: row.site,
 				data: temp
 			});
 		});
-		console.log(siteCharts);
 		setCharts(siteCharts);
 	};
 

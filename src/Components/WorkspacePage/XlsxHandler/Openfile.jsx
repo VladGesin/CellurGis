@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { ExcelRenderer } from 'react-excel-renderer';
 
-const Openfile = ({ setTable, setSpinner, showSpinner }) => {
-	const [ showImport, setShowImport ] = useState(!showSpinner);
+const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport }) => {
+	useEffect(
+		() => {
+			setShowImport(!showSpinner);
+		},
+		[ showImport ]
+	);
 
 	const fileHandler = (event) => {
 		let fileObj = event.target.files[0];

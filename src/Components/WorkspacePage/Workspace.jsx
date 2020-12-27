@@ -10,6 +10,7 @@ const Workspace = () => {
 	const [ siteArr, setSiteArr ] = useState([]);
 	const [ siteChart, setCharts ] = useState([]);
 	const [ showSpinner, setSpinner ] = useState(false);
+	const [ showImport, setShowImport ] = useState(!showSpinner);
 
 	useEffect(
 		() => {
@@ -22,9 +23,21 @@ const Workspace = () => {
 
 	return (
 		<div>
-			<Openfile setTable={setTable} setSpinner={setSpinner} showSpinner={showSpinner} />
+			<Openfile
+				setTable={setTable}
+				setSpinner={setSpinner}
+				showSpinner={showSpinner}
+				setShowImport={setShowImport}
+				showImport={showImport}
+			/>
 			<GetSites table={table} setSiteArr={setSiteArr} />
-			<Charts siteArr={siteArr} table={table} siteChart={siteChart} setCharts={setCharts} />
+			<Charts
+				siteArr={siteArr}
+				table={table}
+				siteChart={siteChart}
+				setCharts={setCharts}
+				setShowImport={setShowImport}
+			/>
 			<Loader
 				type="TailSpin"
 				color="#00BFFF"
