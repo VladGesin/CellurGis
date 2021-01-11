@@ -1,43 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import Openfile from './XlsxHandler/Openfile';
-import GetSites from './XlsxHandler/GetSites';
 import Charts from './Charts/Charts';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
+import api from '../../api';
 
 const Workspace = () => {
-	const [ table, setTable ] = useState({ cols: null, rows: null });
 	const [ siteArr, setSiteArr ] = useState([]);
-	const [ siteChart, setCharts ] = useState([]);
 	const [ showSpinner, setSpinner ] = useState(false);
 	const [ showImport, setShowImport ] = useState(!showSpinner);
 
 	useEffect(
 		() => {
-			if (siteChart.length > 0) {
+			if (siteArr.length > 0) {
 				setSpinner(false);
+				setShowImport(false);
 			}
 		},
-		[ siteChart ]
+		[ siteArr ]
 	);
+
+	//Get site arr
+	useEffect(() => {
+		getSites();
+	}, []);
+
+	//Show import or loader
+	useEffect(
+		() => {
+			setShowImport(!showSpinner);
+		},
+		[ showSpinner ]
+	);
+	//Check if sites in DB
+	const getSites = () => {
+		api.get('sites').then((res) => setSiteArr(res.data));
+	};
 
 	return (
 		<div>
-			<Openfile
-				setTable={setTable}
-				setSpinner={setSpinner}
-				showSpinner={showSpinner}
-				setShowImport={setShowImport}
-				showImport={showImport}
-			/>
-			<GetSites table={table} setSiteArr={setSiteArr} />
-			<Charts
-				siteArr={siteArr}
-				table={table}
-				siteChart={siteChart}
-				setCharts={setCharts}
-				setShowImport={setShowImport}
-			/>
+			{showImport && <Openfile setSpinner={setSpinner} />}
+			<Charts siteArr={siteArr} setShowImport={setShowImport} showSpinner={showSpinner} />
 			<Loader
 				type="TailSpin"
 				color="#00BFFF"

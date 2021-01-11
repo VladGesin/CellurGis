@@ -1,41 +1,23 @@
+import Alert from 'react-bootstrap/Alert';
 import React, { useEffect, useState } from 'react';
-import { ExcelRenderer } from 'react-excel-renderer';
-import XLSX from 'xlsx';
-import axios, { fetch } from 'axios';
+import api from '../../../api';
 
-const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport }) => {
-	useEffect(
-		() => {
-			setShowImport(!showSpinner);
-		},
-		[ showImport ]
-	);
-
-	const fileHandler = (event) => {
-		console.log(event);
-		console.log(event.target);
-		let fileObj = event.target.files[0];
-		setSpinner(true);
-		setShowImport(false);
-		//just pass the fileObj as parameter
-		ExcelRenderer(fileObj, (err, resp) => {
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(resp.rows);
-				setTable({
-					cols: resp.cols,
-					rows: resp.rows
-				});
-			}
-		});
-	};
+const Openfile = ({ setSpinner }) => {
 	const [ xlsx, setXlsx ] = useState();
+	const [ alert, setAlert ] = useState(false);
+	useEffect(() => {}, []);
 
 	const onFormSubmit = (e) => {
 		e.preventDefault(); // Stop form submit
-		fileUpload(xlsx).then((response) => {
-			console.log(response.data);
+		fileUpload(xlsx).then((res) => {
+			if (res.status === 400) {
+				setSpinner(false);
+				setAlert(true);
+			}
+			if (res.status === 200) {
+				setSpinner(true);
+				setAlert(false);
+			}
 		});
 	};
 
@@ -43,12 +25,9 @@ const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport
 		setXlsx(e.target.files[0]);
 	};
 	const fileUpload = async (file) => {
-		const url = 'http://localhost:5000/api/file/upload';
 		const formData = new FormData();
 		formData.append('file', file);
-		console.log('Post');
-
-		return await axios.post(url, formData);
+		return await api.post('api/file/uploadcsv', formData);
 	};
 	return (
 		<div>
@@ -57,6 +36,12 @@ const Openfile = ({ setTable, setSpinner, showSpinner, setShowImport, showImport
 				<input type="file" onChange={onChange} />
 				<button type="submit">Upload</button>
 			</form>
+			{alert && (
+				<Alert variant="danger" onClose={() => setAlert(false)} dismissible>
+					<Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+					<p>Upload Only CSV Files</p>
+				</Alert>
+			)}
 		</div>
 	);
 };

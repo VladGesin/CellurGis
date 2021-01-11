@@ -3,11 +3,9 @@ import ChartArr from './ChartArr';
 import { Line, Bar } from 'react-chartjs-2';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import TabPane from 'react-bootstrap/TabPane';
-import TabContainer from 'react-bootstrap/TabContainer';
 
-export default function Charts({ siteArr, table, siteChart, setCharts, setShowImport }) {
-	// const [ siteChart, setCharts ] = useState([]);
+export default function Charts({ siteArr, setShowImport, showSpinner }) {
+	const [ siteChart, setCharts ] = useState([]);
 	const [ showData, setShowData ] = useState(false);
 	const [ key, setKey ] = useState();
 
@@ -108,7 +106,7 @@ export default function Charts({ siteArr, table, siteChart, setCharts, setShowIm
 
 	return (
 		<div>
-			<ChartArr setCharts={setCharts} siteArr={siteArr} table={table} />
+			<ChartArr setCharts={setCharts} siteArr={siteArr} />
 			{showData && (
 				<Tabs
 					transition={false}
