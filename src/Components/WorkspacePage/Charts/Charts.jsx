@@ -1,131 +1,93 @@
 import React, { useState, useEffect } from 'react';
+import api from '../../../api';
 import ChartArr from './ChartArr';
-import { Line, Bar } from 'react-chartjs-2';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
+import axios from 'axios';
 
-export default function Charts({ siteArr, setShowImport, showSpinner }) {
-	const [ siteChart, setCharts ] = useState([]);
-	const [ showData, setShowData ] = useState(false);
-	const [ key, setKey ] = useState();
+export default function Charts({ sites, setShowImport }) {
+	const [ siteArr, setSiteArr ] = useState([]);
+	const [ update, setUpdate ] = useState(sites);
 
 	useEffect(
 		() => {
-			if (siteChart.length > 0) {
-				setShowData(true);
-			}
+			setDistFromApi();
 		},
-		[ siteChart ]
+		[ sites ]
 	);
 
 	useEffect(
 		() => {
-			if (key == 1) {
-				setShowData(false);
-				setCharts([]);
-				setShowImport(true);
-			}
+			setCounterFromApi();
 		},
-		[ key ]
+		[ update ]
 	);
-	//Make charts
 
-	const MakeLine = (site) => {
-		const temp = {
-			labels: site.data.lable,
-			datasets: [
-				{
-					label: 'RSRP max',
-					data: site.data.max,
-					pointBorderWidth: 2,
-					pointHoverRadius: 6,
-					pointRadius: 5,
-					backgroundColor: 'rgb(255, 0, 0)',
-					borderColor: 'rgb(175, 0, 0)',
-					pointBorderColor: 'rgb(175, 0, 0)',
-					pointBackgroundColor: '#fff',
-					pointHoverBackgroundColor: 'rgb(255, 0, 0)',
-					pointHoverBorderColor: 'rgb(0, 0, 0)',
-					fill: false // disables bezier curves
-				},
-				{
-					label: 'RSRP min',
-					data: site.data.min,
-					pointBorderWidth: 2,
-					pointHoverRadius: 6,
-					pointRadius: 5,
-					backgroundColor: 'rgb(0, 0, 255)',
-					borderColor: 'rgb(0, 0, 175)',
-					pointBorderColor: 'rgb(0, 0, 175)',
-					pointBackgroundColor: '#fff',
-					pointHoverBackgroundColor: 'rgb(0, 0, 255)',
-					pointHoverBorderColor: 'rgb(0, 0, 0)',
-					fill: false // disables bezier curves
-				},
-				{
-					label: 'RSRP avg',
-					data: site.data.avg,
-					pointBorderWidth: 2,
-					pointHoverRadius: 6,
-					pointRadius: 5,
-					backgroundColor: 'rgb(0, 255, 0)',
-					borderColor: 'rgb(0, 175, 0)',
-					pointBorderColor: 'rgb(0, 175, 0)',
-					pointBackgroundColor: '#fff',
-					pointHoverBackgroundColor: 'rgb(0, 255, 0)',
-					pointHoverBorderColor: 'rgb(0, 0, 0)',
-					fill: false // disables bezier curves
-				}
-			]
+	useEffect(
+		() => {
+			setSiteArr([]);
+		},
+		[ setShowImport ]
+	);
+
+	const setDistFromApi = () => {
+		const handleDistsSite = (eachSite) => {
+			return api.get(`sitedist/${eachSite.site_id}`).then((res) => {
+				const dists = res.data.map((el) => {
+					return el.dist;
+				});
+				return {
+					...eachSite,
+					dist: dists
+				};
+			});
 		};
-		return temp;
+
+		Promise.all(sites.map(handleDistsSite)).then((res) => {
+			setSiteArr(res);
+			setUpdate(res);
+		});
 	};
 
-	const MakeBar = (site) => {
-		const temp = {
-			labels: site.data.lable,
-			datasets: [
-				{
-					label: 'Counter Points',
-					data: site.data.counter,
-					backgroundColor: 'rgb(0, 166, 185)',
-					borderColor: 'rgb(0, 166, 185)',
-					fill: false // disables bezier curves
-				},
-				{
-					label: 'Greater than 92',
-					data: site.data.counter92,
-					backgroundColor: 'rgb(185, 39, 0)',
-					borderColor: 'rgb(185, 39, 0)',
-					fill: false // disables bezier curves
-				}
-			]
+	const getDataFromApi = (url, vars, site_id) => {
+		let data = [];
+		data = vars.map((val) => {
+			return api.get(`${url}/${site_id}/${val}`).then((res) => {
+				const count = res.data;
+				return count[0].count;
+			});
+		});
+		return data;
+	};
+
+	const setCounterFromApi = () => {
+		const setCounterFromApi = (eachSite) => {
+			// console.log(eachSite);
+			let count = [];
+			count = eachSite.dist.map((dist) => {
+				return dist;
+			});
+
+			return Promise.all(getDataFromApi('countrsrp', count, eachSite.site_id)).then((res) => {
+				return {
+					...eachSite,
+					count: res
+				};
+			});
 		};
-		return temp;
+
+		Promise.all(siteArr.map(setCounterFromApi)).then((res) => {
+			console.log(res);
+			setSiteArr(res);
+			console.log(siteArr);
+		});
+	};
+
+	const test = () => {
+		console.log(siteArr);
 	};
 
 	return (
 		<div>
-			<ChartArr setCharts={setCharts} siteArr={siteArr} />
-			{showData && (
-				<Tabs
-					transition={false}
-					id="noanim-tab-example"
-					onSelect={(k) => setKey(k)}
-					defaultActiveKey={siteChart[0].site.site}
-				>
-					{showData &&
-						siteChart.map((site) => {
-							return (
-								<Tab eventKey={site.site} title={site.site} key={site.site}>
-									<Line data={MakeLine(site)} width={100} height={20} />
-									<Bar data={MakeBar(site)} width={100} height={20} />
-								</Tab>
-							);
-						})}
-					{showData && <Tab eventKey={1} title="Clean" />}
-				</Tabs>
-			)}
+			<ChartArr siteArr={siteArr} setShowImport={setShowImport} />
 		</div>
 	);
 }

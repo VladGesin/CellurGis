@@ -37,9 +37,9 @@ class Mappage extends Component {
 	};
 
 	onMousemove = (ev) => {
-		var lat, lng;
-		lat = ev.latlng.lat;
-		lng = ev.latlng.lng;
+		// var lat, lng;
+		// lat = ev.latlng.lat;
+		// lng = ev.latlng.lng;
 	};
 
 	onMapClick = () => {

@@ -4,43 +4,51 @@ import Charts from './Charts/Charts';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
 import api from '../../api';
+import Alert from 'react-bootstrap/Alert';
 
 const Workspace = () => {
-	const [ siteArr, setSiteArr ] = useState([]);
+	const [ sites, setSites ] = useState([]);
 	const [ showSpinner, setSpinner ] = useState(false);
 	const [ showImport, setShowImport ] = useState(!showSpinner);
+	const [ alert, setAlert ] = useState(false);
 
 	useEffect(
 		() => {
-			if (siteArr.length > 0) {
+			if (sites.length > 0) {
 				setSpinner(false);
 				setShowImport(false);
-			}
+				setAlert(false);
+			} else setShowImport(true);
 		},
-		[ siteArr ]
+		[ sites ]
 	);
-
-	//Get site arr
-	useEffect(() => {
-		getSites();
-	}, []);
 
 	//Show import or loader
 	useEffect(
 		() => {
 			setShowImport(!showSpinner);
+			getSites();
 		},
 		[ showSpinner ]
 	);
+
 	//Check if sites in DB
-	const getSites = () => {
-		api.get('sites').then((res) => setSiteArr(res.data));
+	const getSites = async () => {
+		await api.get('sites').then((res) => {
+			setSites(res.data);
+		});
 	};
 
 	return (
 		<div>
-			{showImport && <Openfile setSpinner={setSpinner} />}
-			<Charts siteArr={siteArr} setShowImport={setShowImport} showSpinner={showSpinner} />
+			{showImport && <Openfile setSpinner={setSpinner} setAlert={setAlert} />}
+			<Charts sites={sites} setShowImport={setShowImport} />
+			{alert && (
+				<Alert variant="danger" onClose={() => setAlert(false)} dismissible>
+					<Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+					<p>Upload Only CSV Files</p>
+				</Alert>
+			)}
 			<Loader
 				type="TailSpin"
 				color="#00BFFF"

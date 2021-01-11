@@ -1,22 +1,18 @@
-import Alert from 'react-bootstrap/Alert';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import api from '../../../api';
 
-const Openfile = ({ setSpinner }) => {
+const Openfile = ({ setSpinner, setAlert }) => {
 	const [ xlsx, setXlsx ] = useState();
-	const [ alert, setAlert ] = useState(false);
-	useEffect(() => {}, []);
 
 	const onFormSubmit = (e) => {
 		e.preventDefault(); // Stop form submit
+		setSpinner(true);
+		setAlert(false);
 		fileUpload(xlsx).then((res) => {
-			if (res.status === 400) {
-				setSpinner(false);
+			setSpinner(false);
+			// setAlert(false);
+			if (res.status === 400 || 500) {
 				setAlert(true);
-			}
-			if (res.status === 200) {
-				setSpinner(true);
-				setAlert(false);
 			}
 		});
 	};
@@ -36,12 +32,6 @@ const Openfile = ({ setSpinner }) => {
 				<input type="file" onChange={onChange} />
 				<button type="submit">Upload</button>
 			</form>
-			{alert && (
-				<Alert variant="danger" onClose={() => setAlert(false)} dismissible>
-					<Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-					<p>Upload Only CSV Files</p>
-				</Alert>
-			)}
 		</div>
 	);
 };

@@ -10,11 +10,6 @@ class API {
 		return response_data;
 	};
 
-	get = async (path, data) => {
-		const response_data = await axios.get(`${this.base_url}${path}`, data);
-		return response_data;
-	};
-
 	post = async (path, data) => {
 		const response_data = await axios.post(`${this.base_url}${path}`, data).catch((error) => {
 			return error.response;
