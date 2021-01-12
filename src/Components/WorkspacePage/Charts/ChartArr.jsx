@@ -104,7 +104,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 				},
 				{
 					label: 'Greater than 92',
-					data: 'site.data.counter92',
+					data: site.countRSRP,
 					backgroundColor: 'rgb(185, 39, 0)',
 					borderColor: 'rgb(185, 39, 0)',
 					fill: false // disables bezier curves

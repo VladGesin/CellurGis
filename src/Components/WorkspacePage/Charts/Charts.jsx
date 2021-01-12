@@ -6,10 +6,13 @@ export default function Charts({ sites, setShowImport }) {
 	const [ siteArr, setSiteArr ] = useState([]);
 	const [ update, setUpdate ] = useState(false);
 	const [ siteFinish, setSiteFinish ] = useState([]);
+	const [ charts, setCharts ] = useState([]);
 
 	useEffect(
 		() => {
 			createObj();
+			setUpdate(false);
+			setSiteFinish([]);
 		},
 		[ sites ]
 	);
@@ -49,14 +52,17 @@ export default function Charts({ sites, setShowImport }) {
 		});
 	};
 
-	const getDataFromApi = (url, vars) => {
+	const getDataFromApi = async (url, vars) => {
 		const data = vars.map((val) => {
 			return api.get(`${url}/${val}`).then((res) => {
-				const count = res.data;
-				return count[0].count;
+				const chartRes = res.data[0];
+				return chartRes.count;
 			});
 		});
-		return data;
+		console.log(data);
+		return Promise.all(data).then((data) => {
+			return data;
+		});
 	};
 
 	const setCounterFromApi = async () => {
@@ -67,19 +73,20 @@ export default function Charts({ sites, setShowImport }) {
 				getDataFromApi(`countrsrp/${eachSite.site_id}`, count),
 				getDataFromApi(`countrsrpgreater/${eachSite.site_id}/${-92}`, count)
 			]).then((res) => {
-				res.map((row) =>
-					Promise.all(row).then((row) => {
-						console.log(row);
-					})
-				);
+				// console.log(res);
+				res.map((row) => {
+					console.log(row);
+					charts.push(row);
+				});
+				console.log(charts);
 				return {
 					...eachSite,
-					count: 10,
-					countRSRP: 10
+					count: charts[0],
+					countRSRP: charts[1]
 				};
 			});
 		});
-		Promise.all(counter).then((res) => {
+		await Promise.all(counter).then((res) => {
 			console.log(res);
 			setSiteFinish(res);
 		});
