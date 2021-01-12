@@ -97,7 +97,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 			datasets: [
 				{
 					label: 'Counter Points',
-					data: 'site.data.counter',
+					data: site.count,
 					backgroundColor: 'rgb(0, 166, 185)',
 					borderColor: 'rgb(0, 166, 185)',
 					fill: false // disables bezier curves
@@ -116,7 +116,8 @@ export default function ChartArr({ siteArr, setShowImport }) {
 
 	return (
 		<div>
-			{showData && (
+			{showData &&
+			siteArr.length && (
 				<Tabs
 					transition={false}
 					id="noanim-tab-example"

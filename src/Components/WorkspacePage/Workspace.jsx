@@ -18,7 +18,7 @@ const Workspace = () => {
 				setSpinner(false);
 				setShowImport(false);
 				setAlert(false);
-			} else setShowImport(true);
+			}
 		},
 		[ sites ]
 	);
@@ -41,7 +41,7 @@ const Workspace = () => {
 
 	return (
 		<div>
-			{showImport && <Openfile setSpinner={setSpinner} setAlert={setAlert} />}
+			{showImport && <Openfile setSpinner={setSpinner} setAlert={setAlert} setShowImport={setShowImport} />}
 			<Charts sites={sites} setShowImport={setShowImport} />
 			{alert && (
 				<Alert variant="danger" onClose={() => setAlert(false)} dismissible>

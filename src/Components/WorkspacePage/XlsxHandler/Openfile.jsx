@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import api from '../../../api';
 
-const Openfile = ({ setSpinner, setAlert }) => {
+const Openfile = ({ setSpinner, setAlert, setShowImport }) => {
 	const [ xlsx, setXlsx ] = useState();
 
 	const onFormSubmit = (e) => {
 		e.preventDefault(); // Stop form submit
+		setShowImport(false);
 		setSpinner(true);
 		setAlert(false);
 		fileUpload(xlsx).then((res) => {

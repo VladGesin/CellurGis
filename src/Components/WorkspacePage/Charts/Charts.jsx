@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../api';
 import ChartArr from './ChartArr';
-import axios from 'axios';
 
 export default function Charts({ sites, setShowImport }) {
 	const [ siteArr, setSiteArr ] = useState([]);
-	const [ update, setUpdate ] = useState(sites);
+	const [ update, setUpdate ] = useState(false);
+	const [ siteFinish, setSiteFinish ] = useState([]);
 
 	useEffect(
 		() => {
-			setDistFromApi();
+			createObj();
 		},
 		[ sites ]
 	);
 
 	useEffect(
 		() => {
-			setCounterFromApi();
+			if (update) {
+				setCounterFromApi();
+			}
 		},
 		[ update ]
 	);
 
-	useEffect(
-		() => {
-			setSiteArr([]);
-		},
-		[ setShowImport ]
-	);
+	const createObj = async () => {
+		if (sites.length > 0) {
+			await setDistFromApi();
+			// setCounterFromApi();
+		}
+	};
 
-	const setDistFromApi = () => {
+	//Get Diffrent distances from DB
+	const setDistFromApi = async () => {
 		const handleDistsSite = (eachSite) => {
 			return api.get(`sitedist/${eachSite.site_id}`).then((res) => {
 				const dists = res.data.map((el) => {
@@ -40,17 +43,15 @@ export default function Charts({ sites, setShowImport }) {
 				};
 			});
 		};
-
-		Promise.all(sites.map(handleDistsSite)).then((res) => {
+		await Promise.all(sites.map(handleDistsSite)).then((res) => {
 			setSiteArr(res);
-			setUpdate(res);
+			setUpdate(true);
 		});
 	};
 
-	const getDataFromApi = (url, vars, site_id) => {
-		let data = [];
-		data = vars.map((val) => {
-			return api.get(`${url}/${site_id}/${val}`).then((res) => {
+	const getDataFromApi = (url, vars) => {
+		const data = vars.map((val) => {
+			return api.get(`${url}/${val}`).then((res) => {
 				const count = res.data;
 				return count[0].count;
 			});
@@ -58,36 +59,31 @@ export default function Charts({ sites, setShowImport }) {
 		return data;
 	};
 
-	const setCounterFromApi = () => {
-		const setCounterFromApi = (eachSite) => {
-			// console.log(eachSite);
-			let count = [];
-			count = eachSite.dist.map((dist) => {
-				return dist;
-			});
+	const setCounterFromApi = async () => {
+		const counter = siteArr.map((eachSite) => {
+			const count = eachSite.dist;
 
-			return Promise.all(getDataFromApi('countrsrp', count, eachSite.site_id)).then((res) => {
+			return Promise.all([
+				getDataFromApi(`countrsrp/${eachSite.site_id}`, count),
+				getDataFromApi(`countrsrpgreater/${eachSite.site_id}/${-92}`, count)
+			]).then((res) => {
+				res.map((row) =>
+					Promise.all(row).then((row) => {
+						console.log(row);
+					})
+				);
 				return {
 					...eachSite,
-					count: res
+					count: 10,
+					countRSRP: 10
 				};
 			});
-		};
-
-		Promise.all(siteArr.map(setCounterFromApi)).then((res) => {
+		});
+		Promise.all(counter).then((res) => {
 			console.log(res);
-			setSiteArr(res);
-			console.log(siteArr);
+			setSiteFinish(res);
 		});
 	};
 
-	const test = () => {
-		console.log(siteArr);
-	};
-
-	return (
-		<div>
-			<ChartArr siteArr={siteArr} setShowImport={setShowImport} />
-		</div>
-	);
+	return <div>{siteFinish && <ChartArr siteArr={siteFinish} setShowImport={setShowImport} />}</div>;
 }
