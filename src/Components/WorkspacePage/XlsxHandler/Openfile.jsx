@@ -10,9 +10,8 @@ const Openfile = ({ setSpinner, setAlert, setShowImport }) => {
 		setSpinner(true);
 		setAlert(false);
 		fileUpload(xlsx).then((res) => {
-			setSpinner(false);
-			// setAlert(false);
 			if (res.status === 400 || 500) {
+				setSpinner(false);
 				setAlert(true);
 			}
 		});

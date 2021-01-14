@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../../api';
 import ChartArr from './ChartArr';
 
-export default function Charts({ sites, setShowImport }) {
+export default function Charts({ sites, setShowImport, setSpinner }) {
 	const [ siteArr, setSiteArr ] = useState([]);
 	const [ update, setUpdate ] = useState(false);
 	const [ siteFinish, setSiteFinish ] = useState([]);
@@ -29,7 +29,6 @@ export default function Charts({ sites, setShowImport }) {
 	const createObj = async () => {
 		if (sites.length > 0) {
 			await setDistFromApi();
-			// setCounterFromApi();
 		}
 	};
 
@@ -52,43 +51,50 @@ export default function Charts({ sites, setShowImport }) {
 		});
 	};
 
+	//Get data from api {url}/{count}
 	const getDataFromApi = async (url, vars) => {
 		const data = vars.map((val) => {
 			return api.get(`${url}/${val}`).then((res) => {
 				const chartRes = res.data[0];
-				return chartRes.count;
+				return Object.entries(chartRes)[0][1];
 			});
 		});
-		console.log(data);
+		// console.log(data);
 		return Promise.all(data).then((data) => {
+			console.log(data);
+
 			return data;
 		});
 	};
 
+	//Make Chart arr from API
 	const setCounterFromApi = async () => {
 		const counter = siteArr.map((eachSite) => {
 			const count = eachSite.dist;
 
 			return Promise.all([
 				getDataFromApi(`countrsrp/${eachSite.site_id}`, count),
-				getDataFromApi(`countrsrpgreater/${eachSite.site_id}/${-92}`, count)
+				getDataFromApi(`countrsrpgreater/${eachSite.site_id}/${-92}`, count),
+				getDataFromApi(`getmax/${eachSite.site_id}`, count),
+				getDataFromApi(`getmin/${eachSite.site_id}`, count),
+				getDataFromApi(`getavg/${eachSite.site_id}`, count)
 			]).then((res) => {
-				// console.log(res);
 				res.map((row) => {
-					console.log(row);
 					charts.push(row);
 				});
-				console.log(charts);
 				return {
 					...eachSite,
 					count: charts[0],
-					countRSRP: charts[1]
+					countRSRP: charts[1],
+					max: charts[2],
+					min: charts[3],
+					avg: charts[4]
 				};
 			});
 		});
 		await Promise.all(counter).then((res) => {
-			console.log(res);
 			setSiteFinish(res);
+			setSpinner(false);
 		});
 	};
 

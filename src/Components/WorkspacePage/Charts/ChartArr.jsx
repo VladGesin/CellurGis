@@ -47,7 +47,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 			datasets: [
 				{
 					label: 'RSRP max',
-					data: 'site.data.max',
+					data: site.max,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,
@@ -61,7 +61,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 				},
 				{
 					label: 'RSRP min',
-					data: 'site.data.min',
+					data: site.min,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,
@@ -75,7 +75,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 				},
 				{
 					label: 'RSRP avg',
-					data: 'site.data.avg',
+					data: site.avg,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,

@@ -14,6 +14,13 @@ const Workspace = () => {
 
 	useEffect(
 		() => {
+			getSites();
+		},
+		[ showSpinner ]
+	);
+
+	useEffect(
+		() => {
 			if (sites.length > 0) {
 				setSpinner(false);
 				setShowImport(false);
@@ -42,7 +49,7 @@ const Workspace = () => {
 	return (
 		<div>
 			{showImport && <Openfile setSpinner={setSpinner} setAlert={setAlert} setShowImport={setShowImport} />}
-			<Charts sites={sites} setShowImport={setShowImport} />
+			<Charts sites={sites} setShowImport={setShowImport} setSpinner={setSpinner} />
 			{alert && (
 				<Alert variant="danger" onClose={() => setAlert(false)} dismissible>
 					<Alert.Heading>Oh snap! You got an error!</Alert.Heading>
