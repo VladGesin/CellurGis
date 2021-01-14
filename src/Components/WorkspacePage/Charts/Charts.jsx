@@ -6,7 +6,6 @@ export default function Charts({ sites, setShowImport, setSpinner }) {
 	const [ siteArr, setSiteArr ] = useState([]);
 	const [ update, setUpdate ] = useState(false);
 	const [ siteFinish, setSiteFinish ] = useState([]);
-	const [ charts, setCharts ] = useState([]);
 
 	useEffect(
 		() => {
@@ -59,10 +58,7 @@ export default function Charts({ sites, setShowImport, setSpinner }) {
 				return Object.entries(chartRes)[0][1];
 			});
 		});
-		// console.log(data);
 		return Promise.all(data).then((data) => {
-			console.log(data);
-
 			return data;
 		});
 	};
@@ -79,8 +75,10 @@ export default function Charts({ sites, setShowImport, setSpinner }) {
 				getDataFromApi(`getmin/${eachSite.site_id}`, count),
 				getDataFromApi(`getavg/${eachSite.site_id}`, count)
 			]).then((res) => {
-				res.map((row) => {
-					charts.push(row);
+				// let charts = [];
+				const charts = res.map((row) => {
+					// charts.push(row);
+					return row;
 				});
 				return {
 					...eachSite,
@@ -94,9 +92,12 @@ export default function Charts({ sites, setShowImport, setSpinner }) {
 		});
 		await Promise.all(counter).then((res) => {
 			setSiteFinish(res);
-			setSpinner(false);
 		});
 	};
 
-	return <div>{siteFinish && <ChartArr siteArr={siteFinish} setShowImport={setShowImport} />}</div>;
+	return (
+		<div>
+			{siteFinish && <ChartArr siteArr={siteFinish} setShowImport={setShowImport} setSpinner={setSpinner} />}
+		</div>
+	);
 }

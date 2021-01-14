@@ -42,7 +42,7 @@ const Workspace = () => {
 	//Check if sites in DB
 	const getSites = async () => {
 		await api.get('sites').then((res) => {
-			setSites(res.data);
+			if (res.data.length > 0) setSites(res.data);
 		});
 	};
 
