@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../api';
-import { Line, Bar } from 'react-chartjs-2';
+import { Line, Bar, HorizontalBar } from 'react-chartjs-2';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 
-export default function ChartArr({ siteArr, setShowImport }) {
+export default function ChartArr({ siteArr, setShowImport, setSpinner }) {
 	const [ key, setKey ] = useState();
-	const [ showData, setShowData ] = useState(false);
+	const [ siteChart, setSiteChart ] = useState(siteArr);
 
+	//SetUp chart Values
 	useEffect(
 		() => {
 			if (siteArr.length > 0) {
-				setShowData(true);
+				setSiteChart(siteArr);
+				createDistance();
 			}
 		},
 		[ siteArr ]
@@ -21,7 +23,6 @@ export default function ChartArr({ siteArr, setShowImport }) {
 	useEffect(
 		() => {
 			if (key == 1) {
-				setShowData(false);
 				setShowImport(true);
 				cleanDataFromDB();
 			}
@@ -29,11 +30,37 @@ export default function ChartArr({ siteArr, setShowImport }) {
 		[ key ]
 	);
 
+	useEffect(
+		() => {
+			setSpinner(false);
+		},
+		[ siteChart ]
+	);
+
+	//Set Distance to string with KM
+	const createDistance = () => {
+		const newCharts = siteArr.map((site) => {
+			const sumPoint = calcCount(site.count);
+			const sumPointRsrpG = calcCount(site.countRSRP);
+			const newDist = site.dist.map((dist) => {
+				return dist + 'km';
+			});
+			return {
+				...site,
+				dist: newDist,
+				sumPoint: sumPoint,
+				sumPointRsrpG: sumPointRsrpG
+			};
+		});
+		setSiteChart(newCharts);
+	};
+
 	//Clean Charts after click on clean
 	const cleanDataFromDB = () => {
 		api.delete('dots');
 		api.delete('sites');
 		api.delete('chartsdelete');
+		setSiteChart([]);
 	};
 	//site arr
 	/*latitude: 31.869398
@@ -47,7 +74,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 			datasets: [
 				{
 					label: 'RSRP max',
-					data: 'site.data.max',
+					data: site.max,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,
@@ -61,7 +88,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 				},
 				{
 					label: 'RSRP min',
-					data: 'site.data.min',
+					data: site.min,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,
@@ -75,7 +102,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 				},
 				{
 					label: 'RSRP avg',
-					data: 'site.data.avg',
+					data: site.avg,
 					pointBorderWidth: 2,
 					pointHoverRadius: 6,
 					pointRadius: 5,
@@ -91,7 +118,7 @@ export default function ChartArr({ siteArr, setShowImport }) {
 		};
 		return MakeLines;
 	};
-	const MakeBar = (site) => {
+	const MakeBarVertical = (site) => {
 		const MakeBars = {
 			labels: site.dist,
 			datasets: [
@@ -114,27 +141,55 @@ export default function ChartArr({ siteArr, setShowImport }) {
 		return MakeBars;
 	};
 
+	const calcCount = (arr) => {
+		return arr.reduce((a, b) => {
+			return parseInt(a) + parseInt(b);
+		}, 0);
+	};
+
+	const MakeBarHorizontal = (site) => {
+		const MakeBars = {
+			labels: [ 'Counter Points' ],
+			datasets: [
+				{
+					label: 'Summarize All Points',
+					backgroundColor: 'rgb(0, 166, 185)',
+					borderColor: 'rgb(0, 166, 185)',
+					borderWidth: 1,
+					data: [ site.sumPoint ]
+				},
+				{
+					label: `Greater than 92 (${Math.floor(site.sumPointRsrpG / site.sumPoint * 100)}%)`,
+					backgroundColor: 'rgb(185, 39, 0)',
+					borderColor: 'rgb(185, 39, 0)',
+					borderWidth: 1,
+					data: [ site.sumPointRsrpG ]
+				}
+			]
+		};
+		return MakeBars;
+	};
+
 	return (
 		<div>
-			{showData &&
-			siteArr.length && (
+			{siteChart.length && (
 				<Tabs
 					transition={false}
 					id="noanim-tab-example"
 					onSelect={(k) => setKey(k)}
-					defaultActiveKey={siteArr[0].site_id}
+					defaultActiveKey={siteChart[0].site_id}
 				>
-					{showData &&
-						siteArr.map((site) => {
-							return (
-								<Tab eventKey={site.site_id} title={site.site_name} key={site.site_id}>
-									<h3>{site.site_name}</h3>
-									<Line data={MakeLine(site)} width={100} height={20} />
-									<Bar data={MakeBar(site)} width={100} height={20} />
-								</Tab>
-							);
-						})}
-					{showData && <Tab eventKey={1} title="Clean" />}
+					{siteChart.map((site) => {
+						return (
+							<Tab eventKey={site.site_id} title={site.site_name} key={site.site_id}>
+								<h3>{site.site_name}</h3>
+								<Line data={MakeLine(site)} width={100} height={20} />
+								<Bar data={MakeBarVertical(site)} width={100} height={20} />
+								<HorizontalBar data={MakeBarHorizontal(site)} width={100} height={20} />
+							</Tab>
+						);
+					})}
+					{siteChart && <Tab eventKey={1} title="Clean" />}
 				</Tabs>
 			)}
 		</div>
