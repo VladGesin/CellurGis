@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import './ProjectCard.css';
+import DeleteProjectModal from '../DeleteProject/DeleteProjectModal';
 
 export default function ProjectCard(props) {
+  const [deleteProject, setDeleteProject] = useState(false);
+
   return (
     <div className="project_card">
+      {deleteProject && (
+        <DeleteProjectModal
+          project_id={props.projectItem.project_id}
+          deleteProject={deleteProject}
+          setDeleteProject={setDeleteProject}
+        />
+      )}
       <h5>
         <strong>Project Name: </strong>
         {props.projectItem.project_name}
@@ -24,7 +34,12 @@ export default function ProjectCard(props) {
         <Button size="sm" variant="secondary" className="mr-1">
           Open Map
         </Button>
-        <Button size="sm" variant="danger" className="mr-1">
+        <Button
+          size="sm"
+          variant="danger"
+          className="mr-1"
+          onClick={() => setDeleteProject(true)}
+        >
           Delete
         </Button>
         <Button disabled size="sm" variant="info">
