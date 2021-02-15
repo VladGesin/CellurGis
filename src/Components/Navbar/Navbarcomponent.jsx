@@ -6,20 +6,23 @@ import './Navbar.css';
 const Navbarcomponent = () => {
 	return (
 		<div>
-			<Navbar bg="dark" variant="dark">
+			<Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
 				<Navbar.Brand href="/">
 					{/* <img alt="" src={NavLogo} width="30" height="30" className="d-inline-block align-top" /> Storm */}
 					CellGis
 				</Navbar.Brand>
-				<Nav>
-					<NavLink to="/Workspace" activeClassName="active" className=" links-container">
-						Graphs
-					</NavLink>
-					<NavLink to="/Mappage" activeClassName="active" className=" links-container">
-						{' '}
-						Map
-					</NavLink>
-				</Nav>
+				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
+				<Navbar.Collapse id="responsive-navbar-nav">
+					<Nav>
+						<NavLink to="/Workspace" activeClassName="active" className=" links-container">
+							Graphs
+						</NavLink>
+						<NavLink to="/Mappage" activeClassName="active" className=" links-container">
+							{' '}
+							Map
+						</NavLink>
+					</Nav>
+				</Navbar.Collapse>
 			</Navbar>
 		</div>
 	);

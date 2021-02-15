@@ -1,0 +1,14 @@
+.project_card {
+  border-radius: 20px;
+  border-color: black;
+  border-width: 3px;
+  width: 30%;
+  border-style: solid;
+  margin-left: 2px;
+  display: inline-block;
+}
+
+#footer {
+  margin-left: 2px;
+  margin-right: 2px;
+}

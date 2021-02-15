@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 
-const SitesArr =()=> {
+// const SitesArr =()=> {
 
-  const [site, setSite] = useState({
-    name:'',
-    lat:'',
-    long:'',
-  })
+//   const [site, setSite] = useState({
+//     name:'',
+//     lat:'',
+//     long:'',
+//   })
 
-    return (
-      <div>
-        
-      </div>
-    )
-  }
+//     return (
+//       <div>
 
-export default SitesArr
+//       </div>
+//     )
+//   }
+
+// export default SitesArr
