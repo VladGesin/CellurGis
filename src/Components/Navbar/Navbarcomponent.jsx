@@ -4,28 +4,32 @@ import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbarcomponent = () => {
-	return (
-		<div>
-			<Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
-				<Navbar.Brand href="/">
-					{/* <img alt="" src={NavLogo} width="30" height="30" className="d-inline-block align-top" /> Storm */}
-					CellGis
-				</Navbar.Brand>
-				<Navbar.Toggle aria-controls="responsive-navbar-nav" />
-				<Navbar.Collapse id="responsive-navbar-nav">
-					<Nav>
-						<NavLink to="/Workspace" activeClassName="active" className=" links-container">
-							Graphs
-						</NavLink>
-						<NavLink to="/Mappage" activeClassName="active" className=" links-container">
+  return (
+    <div>
+      <Navbar bg="dark" variant="dark" collapseOnSelect expand="lg">
+        <Navbar.Brand href="/">
+          {/* <img alt="" src={NavLogo} width="30" height="30" className="d-inline-block align-top" /> Storm */}
+          CellGis
+        </Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav>
+            <NavLink
+              to="/Workspace"
+              activeClassName="active"
+              className=" links-container"
+            >
+              Graphs
+            </NavLink>
+            {/* <NavLink to="/Mappage" activeClassName="active" className=" links-container">
 							{' '}
 							Map
-						</NavLink>
-					</Nav>
-				</Navbar.Collapse>
-			</Navbar>
-		</div>
-	);
+						</NavLink> */}
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </div>
+  );
 };
 
 export default Navbarcomponent;

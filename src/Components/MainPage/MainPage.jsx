@@ -6,14 +6,25 @@ import Col from 'react-bootstrap/Col';
 import NewProjectModal from './AddNewProject/NewProjectModal';
 import ProjectCard from './ProjectCard/ProjectCard';
 import api from '../Utiles/api';
+import DeleteProjectModal from './DeleteProject/DeleteProjectModal';
+import ShowDataModal from './ShowDataModal/ShowDataModal';
+import './MainPage.css';
 
 const MainPage = () => {
   const [newProject, setNewProject] = useState(false);
   const [projectList, setProjectList] = useState([]);
+  const [deleteID, setdeleteID] = useState(null);
+  const [dataModal, setDataModal] = useState({
+    project_id: '',
+    class: 'hide',
+    openCharts: false,
+    openMap: false,
+  });
   const user_id = '1c9d2f2d-af8a-4be7-bf06-86295e6e3001';
+
   useEffect(() => {
     getProjectListFromApi();
-  }, [newProject]);
+  }, [newProject, deleteID]);
 
   useEffect(() => {
     getProjectListFromApi();
@@ -27,7 +38,8 @@ const MainPage = () => {
 
   return (
     <div>
-      <Container id="main-top">
+      <ShowDataModal openData={dataModal} />
+      <Container id="main-top" fluid>
         <Row>
           <Col>
             <h1 className="align-self-center"> Project List</h1>
@@ -41,15 +53,17 @@ const MainPage = () => {
           NewProjectBtn={setNewProject}
           setProjectList={setProjectList}
         />
+        <DeleteProjectModal project_id={deleteID} resetDeleteID={setdeleteID} />
       </Container>
       <div id="project-List" className="mt-2 mx-5">
         {projectList.length > 0 &&
           projectList.map((projectItem) => {
-            console.log(projectItem);
             return (
               <ProjectCard
                 projectItem={projectItem}
-                key={projectItem.project_id}
+                key={`ProjectID:${projectItem.project_id}`}
+                deleteID={setdeleteID}
+                setData={setDataModal}
               />
             );
           })}

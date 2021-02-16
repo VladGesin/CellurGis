@@ -2,7 +2,7 @@
   border-radius: 20px;
   border-color: black;
   border-width: 3px;
-  width: 30%;
+  width: fit-content;
   border-style: solid;
   margin-left: 2px;
   display: inline-block;

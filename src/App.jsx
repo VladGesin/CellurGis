@@ -1,6 +1,6 @@
 import './App.css';
 import Navbarcomponent from './Components/Navbar/Navbarcomponent';
-import { Switch, BrowserRouter as Router, HashRouter } from 'react-router-dom';
+import { Switch, BrowserRouter as Router } from 'react-router-dom';
 import Routes from './Components/Routes/Routes';
 
 //Use HashRouer is Build wont work

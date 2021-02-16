@@ -1,20 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import './ProjectCard.css';
-import DeleteProjectModal from '../DeleteProject/DeleteProjectModal';
 
 export default function ProjectCard(props) {
-  const [deleteProject, setDeleteProject] = useState(false);
-
   return (
     <div className="project_card">
-      {deleteProject && (
-        <DeleteProjectModal
-          project_id={props.projectItem.project_id}
-          deleteProject={deleteProject}
-          setDeleteProject={setDeleteProject}
-        />
-      )}
       <h5>
         <strong>Project Name: </strong>
         {props.projectItem.project_name}
@@ -28,7 +18,19 @@ export default function ProjectCard(props) {
         {props.projectItem.created_on.slice(11, 19)}
       </div>
       <p id="footer">
-        <Button size="sm" variant="primary" className="mr-1">
+        <Button
+          size="sm"
+          variant="primary"
+          className="mr-1"
+          onClick={() =>
+            props.setData({
+              project_id: props.projectItem.project_id,
+              class: 'slide-in',
+              openCharts: true,
+              openMap: false,
+            })
+          }
+        >
           Open Charts
         </Button>
         <Button size="sm" variant="secondary" className="mr-1">
@@ -38,7 +40,7 @@ export default function ProjectCard(props) {
           size="sm"
           variant="danger"
           className="mr-1"
-          onClick={() => setDeleteProject(true)}
+          onClick={() => props.deleteID(props.projectItem.project_id)}
         >
           Delete
         </Button>
