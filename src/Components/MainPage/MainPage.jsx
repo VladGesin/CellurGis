@@ -6,7 +6,7 @@ import Col from 'react-bootstrap/Col';
 import NewProjectModal from './AddNewProject/NewProjectModal';
 import ProjectCard from './ProjectCard/ProjectCard';
 import api from '../Utiles/api';
-import DeleteProjectModal from './DeleteProject/DeleteProjectModal';
+import DeleteModal from './DeleteData/DeleteModal';
 import ShowDataModal from './ShowDataModal/ShowDataModal';
 import './MainPage.css';
 
@@ -53,7 +53,15 @@ const MainPage = () => {
           NewProjectBtn={setNewProject}
           setProjectList={setProjectList}
         />
-        <DeleteProjectModal project_id={deleteID} resetDeleteID={setdeleteID} />
+        {deleteID && (
+          <DeleteModal
+            project_id={deleteID}
+            resetDeleteID={setdeleteID}
+            filename={null}
+            url={'apiv1/deleteproject'}
+            header={'project'}
+          />
+        )}
       </Container>
       <div id="project-List" className="mt-2 mx-5">
         {projectList.length > 0 &&

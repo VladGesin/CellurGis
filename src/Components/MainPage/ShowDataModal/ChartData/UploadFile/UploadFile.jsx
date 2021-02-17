@@ -6,7 +6,9 @@ import Spinner from 'react-bootstrap/Spinner';
 import TableExample from './TableExample';
 import api from '../../../../Utiles/api';
 
-export default function UploadFile({ project }) {
+//Need find soluthin on duplicated file names
+
+export default function UploadFile({ project, getFiles }) {
   const [show, setShow] = useState(false);
   const [file, setFile] = useState({
     fileName: '',
@@ -39,13 +41,16 @@ export default function UploadFile({ project }) {
   const handleShow = () => setShow(true);
 
   //Upload File
-  const handleUpload = async () => {
+  const handleUpload = () => {
     setSpinner(true);
     const formData = new FormData();
     formData.append('file', file.file);
     formData.append('filename', file.fileName);
     formData.append('project_id', project);
-    await api.post('apiv1/csv/newproject', formData).then(() => handleClose());
+    api.post('apiv1/csv/newproject', formData).then(() => {
+      getFiles(project);
+      handleClose();
+    });
   };
 
   return (

@@ -33,7 +33,7 @@ export default function ProjectCard(props) {
         >
           Open Charts
         </Button>
-        <Button size="sm" variant="secondary" className="mr-1">
+        <Button disabled size="sm" variant="secondary" className="mr-1">
           Open Map
         </Button>
         <Button
