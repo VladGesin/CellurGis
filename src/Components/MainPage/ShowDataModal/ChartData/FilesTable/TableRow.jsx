@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../../Utiles/api';
 import Button from 'react-bootstrap/Button';
+import ChartModal from '../ChartModal/ChartModal';
 
 export default function TableRow({ filename, index, project_id, deleteFile }) {
   const [sites, setSites] = useState([]);
@@ -10,20 +11,16 @@ export default function TableRow({ filename, index, project_id, deleteFile }) {
     getCountPoints();
   }, [filename, project_id]);
 
-  const getSites = async () => {
-    await api
-      .get(`apiv1/getfilesites/${project_id}/${filename}`)
-      .then((res) => {
-        setSites(res.data);
-      });
+  const getSites = () => {
+    api.get(`apiv1/getfilesites/${project_id}/${filename}`).then((res) => {
+      setSites(res.data);
+    });
   };
 
-  const getCountPoints = async () => {
-    await api
-      .get(`apiv1/getcountpoints/${project_id}/${filename}`)
-      .then((res) => {
-        setCountPoints(res.data);
-      });
+  const getCountPoints = () => {
+    api.get(`apiv1/getcountpoints/${project_id}/${filename}`).then((res) => {
+      setCountPoints(res.data);
+    });
   };
 
   return (
@@ -38,10 +35,24 @@ export default function TableRow({ filename, index, project_id, deleteFile }) {
         </td>
         <td>{countPoints.count}</td>
         <td>
-          <Button variant="info"> Dist From Site</Button>
+          {sites.length > 0 && (
+            <ChartModal
+              btnText={'Distance From Site'}
+              project_id={project_id}
+              filename={filename}
+              sites={sites}
+            />
+          )}
         </td>
         <td>
-          <Button variant="info">Dist From Border</Button>
+          {sites.length > 0 && (
+            <ChartModal
+              btnText={'Distance From Border'}
+              project_id={project_id}
+              filename={filename}
+              sites={sites}
+            />
+          )}
         </td>
         <td>
           <Button variant="danger" onClick={() => deleteFile(filename)}>

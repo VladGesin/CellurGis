@@ -9,14 +9,14 @@ const BarChart = ({ site }) => {
       datasets: [
         {
           label: 'Counter Points',
-          data: site.count,
+          data: site.countRsrp,
           backgroundColor: 'rgb(0, 166, 185)',
           borderColor: 'rgb(0, 166, 185)',
           fill: false, // disables bezier curves
         },
         {
           label: 'Greater than 92',
-          data: site.countRSRP,
+          data: site.greaterCount,
           backgroundColor: 'rgb(185, 39, 0)',
           borderColor: 'rgb(185, 39, 0)',
           fill: false, // disables bezier curves

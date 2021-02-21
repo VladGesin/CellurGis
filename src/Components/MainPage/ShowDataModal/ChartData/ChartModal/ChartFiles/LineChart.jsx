@@ -9,7 +9,7 @@ const LineChart = ({ site }) => {
       datasets: [
         {
           label: 'RSRP max',
-          data: site.max,
+          data: site.maxRsrp,
           pointBorderWidth: 2,
           pointHoverRadius: 6,
           pointRadius: 5,
@@ -23,7 +23,7 @@ const LineChart = ({ site }) => {
         },
         {
           label: 'RSRP min',
-          data: site.min,
+          data: site.minRsrp,
           pointBorderWidth: 2,
           pointHoverRadius: 6,
           pointRadius: 5,
@@ -37,7 +37,7 @@ const LineChart = ({ site }) => {
         },
         {
           label: 'RSRP avg',
-          data: site.avg,
+          data: site.avgRsrp,
           pointBorderWidth: 2,
           pointHoverRadius: 6,
           pointRadius: 5,

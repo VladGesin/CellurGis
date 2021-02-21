@@ -11,11 +11,7 @@ class API {
   };
 
   post = async (path, data) => {
-    const response_data = await axios
-      .post(`${this.base_url}${path}`, data)
-      .catch((error) => {
-        return error.response;
-      });
+    const response_data = await axios.post(`${this.base_url}${path}`, data);
     return response_data;
   };
 

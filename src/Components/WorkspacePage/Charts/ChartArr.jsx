@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import api from '../../Utiles/api';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
-import HoBarChart from './ChartFiles/HoBarChart';
-import BarChart from './ChartFiles/BarChart';
-import LineChart from './ChartFiles/LineChart';
 
 export default function ChartArr({ siteArr, setShowImport, setSpinner }) {
   const [key, setKey] = useState();
@@ -84,9 +81,6 @@ export default function ChartArr({ siteArr, setShowImport, setSpinner }) {
                 key={site.site_id}
               >
                 <h3>{site.site_name}</h3>
-                <LineChart site={site} />
-                <BarChart site={site} />
-                <HoBarChart site={site} />
               </Tab>
             );
           })}
