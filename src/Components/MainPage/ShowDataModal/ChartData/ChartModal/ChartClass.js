@@ -20,7 +20,8 @@ class Chart {
       .then((res) => {
         return res.data.map((dist) => {
           if (this.table === 'site') return dist.dist_from_site;
-          else return dist.dist_from_ref;
+          else if (this.table === 'refLayer') return dist.dist_from_ref;
+          else return null;
         });
       });
 

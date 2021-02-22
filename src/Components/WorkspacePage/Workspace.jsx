@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Openfile from './XlsxHandler/Openfile';
-import Charts from './Charts/Charts';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 import Loader from 'react-loader-spinner';
 import api from '../../Components/Utiles/api.jsx';
@@ -9,7 +7,6 @@ import Alert from 'react-bootstrap/Alert';
 const Workspace = () => {
   const [sites, setSites] = useState([]);
   const [showSpinner, setSpinner] = useState(false);
-  const [showImport, setShowImport] = useState(!showSpinner);
   const [alert, setAlert] = useState(false);
 
   useEffect(() => {
@@ -19,14 +16,12 @@ const Workspace = () => {
   useEffect(() => {
     if (sites.length > 0) {
       setSpinner(false);
-      setShowImport(false);
       setAlert(false);
     }
   }, [sites]);
 
   //Show import or loader
   useEffect(() => {
-    setShowImport(!showSpinner);
     getSites();
   }, [showSpinner]);
 
@@ -39,18 +34,6 @@ const Workspace = () => {
 
   return (
     <div>
-      {showImport && (
-        <Openfile
-          setSpinner={setSpinner}
-          setAlert={setAlert}
-          setShowImport={setShowImport}
-        />
-      )}
-      <Charts
-        sites={sites}
-        setShowImport={setShowImport}
-        setSpinner={setSpinner}
-      />
       {alert && (
         <Alert variant="danger" onClose={() => setAlert(false)} dismissible>
           <Alert.Heading>Oh snap! You got an error!</Alert.Heading>

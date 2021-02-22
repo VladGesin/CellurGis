@@ -17,7 +17,7 @@ const HoBarChart = ({ site }) => {
     }, 0);
   };
 
-  const MakeBarHorizontal = (site) => {
+  const MakeBarHorizontal = () => {
     return {
       labels: ['Counter Points'],
       datasets: [

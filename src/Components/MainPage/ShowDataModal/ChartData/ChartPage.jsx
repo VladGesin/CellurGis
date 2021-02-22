@@ -10,6 +10,10 @@ export default function ChartPage({ project }) {
   const [projectFiles, setProjectFiles] = useState([]);
   useEffect(() => {
     getProjectFiles(project);
+
+    return () => {
+      setProjectFiles([]);
+    };
   }, [project]);
 
   const getProjectFiles = (project) => {

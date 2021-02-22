@@ -7,17 +7,21 @@ export default function TableRow({ filename, index, project_id, deleteFile }) {
   const [sites, setSites] = useState([]);
   const [countPoints, setCountPoints] = useState([]);
   useEffect(() => {
-    getSites();
-    getCountPoints();
+    getSites(project_id, filename);
+    getCountPoints(project_id, filename);
+    return () => {
+      setSites([]);
+      setCountPoints([]);
+    };
   }, [filename, project_id]);
 
-  const getSites = () => {
+  const getSites = (project_id, filename) => {
     api.get(`apiv1/getfilesites/${project_id}/${filename}`).then((res) => {
       setSites(res.data);
     });
   };
 
-  const getCountPoints = () => {
+  const getCountPoints = (project_id, filename) => {
     api.get(`apiv1/getcountpoints/${project_id}/${filename}`).then((res) => {
       setCountPoints(res.data);
     });

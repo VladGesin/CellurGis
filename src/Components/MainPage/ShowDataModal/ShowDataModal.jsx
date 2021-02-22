@@ -1,27 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import './ShowDataModal.css';
-import ChartData from './ChartData/ChartPage';
+import ChartPage from './ChartData/ChartPage';
 
 export default function ShowDataModal({ openData }) {
   const [show, setShow] = useState({ openData });
+  const [project_id, setProject_id] = useState(false);
   const classes = `${show.class}  data-modal hide`;
-  const { project_id } = openData;
   useEffect(() => {
     setShow(openData);
-  }, [openData]);
+    setProject_id(openData.project_id);
+  }, [openData, openData.project_id]);
 
-  if (openData.openCharts) {
+  if (!project_id) return null;
+  else if (openData.openCharts) {
     return (
       <div className={classes}>
         <Button
           className="side-btn"
-          onClick={() => setShow({ class: 'slide-out' })}
+          onClick={() => {
+            setShow({ class: 'slide-out' });
+            setTimeout(() => {
+              setProject_id(false);
+            }, 700);
+          }}
         >
-          {' '}
-          Close{' '}
+          Close
         </Button>
-        <ChartData className="w-100" project={project_id} />
+        {project_id && <ChartPage className="w-100" project={project_id} />}
       </div>
     );
   } else {
