@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Fragment } from 'react';
 import { HorizontalBar } from 'react-chartjs-2';
 
-const HoBarChart = ({ site }) => {
+const HoBarChart = ({ greaterCount, countRsrp, rsrpRef }) => {
   const [sumPoint, setSumPoint] = useState(0);
   const [sumPointGreather, setSumPointGreather] = useState(0);
 
   useEffect(() => {
-    setSumPointGreather(calcCount(site.greaterCount));
-    setSumPoint(calcCount(site.countRsrp));
-  }, [site.countRsrp, site.greaterCount]);
+    setSumPointGreather(calcCount(greaterCount));
+    setSumPoint(calcCount(countRsrp));
+  }, [greaterCount, countRsrp, rsrpRef]);
 
   const calcCount = (arr) => {
     return arr.reduce((a, b) => {
@@ -29,7 +29,7 @@ const HoBarChart = ({ site }) => {
           data: [sumPoint],
         },
         {
-          label: `Greater than 92 (${Math.floor(
+          label: `Greater than ${rsrpRef} (${Math.floor(
             (sumPointGreather / sumPoint) * 100
           )}%)`,
           backgroundColor: 'rgb(185, 39, 0)',
@@ -43,7 +43,7 @@ const HoBarChart = ({ site }) => {
 
   return (
     <Fragment>
-      <HorizontalBar data={MakeBarHorizontal(site)} width={100} height={20} />
+      <HorizontalBar data={MakeBarHorizontal()} width={90} height={20} />
     </Fragment>
   );
 };

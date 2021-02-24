@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import Workspace from '../WorkspacePage/Workspace';
-import MainPage from '../MainPage/MainPage';
+import MainPage from '../WelcomePage/login';
+import ProjectsPage from '../MainPage/ProjectsPage';
 
 const routesData = [
   { component: MainPage, path: '/', exact: true },
-  { component: Workspace, path: '/Workspace' },
+  { component: ProjectsPage, path: '/ProjectsPage' },
 ];
 
 const Routes = () =>

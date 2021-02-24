@@ -37,7 +37,7 @@ class Chart {
           )
           .then((res) => {
             return res.data.map((max) => {
-              return max.max;
+              return max.round;
             });
           });
         return result[0];
@@ -55,7 +55,7 @@ class Chart {
           )
           .then((res) => {
             return res.data.map((min) => {
-              return min.min;
+              return min.round;
             });
           });
 
@@ -74,7 +74,7 @@ class Chart {
           )
           .then((res) => {
             return res.data.map((avg) => {
-              return avg.avg;
+              return avg.round;
             });
           });
         return result[0];
@@ -117,6 +117,20 @@ class Chart {
       })
     );
     return res;
+  }
+
+  setDistLabels(distances) {
+    if (this.table === 'refLayer') {
+      return distances.map((dist) => {
+        if (dist < 999) return dist.toString().concat('M');
+        else {
+          return (dist / 1000).toString().concat('Km');
+        }
+      });
+    } else
+      return distances.map((dist) => {
+        return dist.toString().concat('Km');
+      });
   }
 }
 

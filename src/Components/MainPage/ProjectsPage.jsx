@@ -8,9 +8,9 @@ import ProjectCard from './ProjectCard/ProjectCard';
 import api from '../Utiles/api';
 import DeleteModal from './DeleteData/DeleteModal';
 import ShowDataModal from './ShowDataModal/ShowDataModal';
-import './MainPage.css';
+import './ProjectsPage.css';
 
-const MainPage = () => {
+const ProjectsPage = () => {
   const [newProject, setNewProject] = useState(false);
   const [projectList, setProjectList] = useState([]);
   const [deleteID, setdeleteID] = useState(null);
@@ -80,4 +80,4 @@ const MainPage = () => {
   );
 };
 
-export default MainPage;
+export default ProjectsPage;

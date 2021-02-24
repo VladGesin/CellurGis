@@ -5,7 +5,7 @@ import { Line } from 'react-chartjs-2';
 const LineChart = ({ site }) => {
   const MakeLine = (site) => {
     return {
-      labels: site.dist,
+      labels: site.labels,
       datasets: [
         {
           label: 'RSRP max',
