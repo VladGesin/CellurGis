@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import MainPage from '../WelcomePage/login';
-import ProjectsPage from '../MainPage/ProjectsPage';
+import ProjectsPage from '../ProjectsPage/ProjectsPage';
 
 const routesData = [
   { component: MainPage, path: '/', exact: true },
