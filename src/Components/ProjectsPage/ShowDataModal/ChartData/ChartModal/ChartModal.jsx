@@ -56,7 +56,7 @@ export default function ChartModal({ btnText, project_id, filename, sites }) {
   return (
     <>
       {!spinner && (
-        <Button variant="info" onClick={handleShow}>
+        <Button size="sm" variant="info" onClick={handleShow}>
           {btnText}
         </Button>
       )}

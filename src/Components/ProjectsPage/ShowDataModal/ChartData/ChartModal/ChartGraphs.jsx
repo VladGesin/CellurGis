@@ -21,7 +21,6 @@ export default function ChartGraphs({ siteData }) {
       rsrpRef,
       siteData.dist
     );
-    console.log('newGreather', newGreather);
     setGreaterCount(newGreather);
   };
 

@@ -8,6 +8,7 @@ import FileTable from './FilesTable/FileTable';
 
 export default function ChartPage({ project }) {
   const [projectFiles, setProjectFiles] = useState([]);
+
   useEffect(() => {
     getProjectFiles(project);
 

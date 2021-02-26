@@ -6,7 +6,9 @@ import ChartPage from './ChartData/ChartPage';
 export default function ShowDataModal({ openData }) {
   const [show, setShow] = useState({ openData });
   const [project_id, setProject_id] = useState(false);
+
   const classes = `${show.class}  data-modal hide`;
+
   useEffect(() => {
     setShow(openData);
     setProject_id(openData.project_id);
@@ -27,7 +29,7 @@ export default function ShowDataModal({ openData }) {
         >
           Close
         </Button>
-        {project_id && <ChartPage className="w-100" project={project_id} />}
+        <ChartPage className="w-100" project={project_id} />
       </div>
     );
   } else {

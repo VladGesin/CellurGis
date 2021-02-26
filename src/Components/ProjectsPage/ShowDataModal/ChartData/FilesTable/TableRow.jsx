@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../../../Utiles/api';
-import Button from 'react-bootstrap/Button';
 import ChartModal from '../ChartModal/ChartModal';
+import DeletetModal from '../../../DeleteData/DeleteModal';
 
-export default function TableRow({ filename, index, project_id, deleteFile }) {
+export default function TableRow({ filename, index, project_id, getFiles }) {
   const [sites, setSites] = useState([]);
   const [countPoints, setCountPoints] = useState([]);
+
   useEffect(() => {
     getSites(project_id, filename);
     getCountPoints(project_id, filename);
@@ -58,10 +59,14 @@ export default function TableRow({ filename, index, project_id, deleteFile }) {
             />
           )}
         </td>
-        <td>
-          <Button variant="danger" onClick={() => deleteFile(filename)}>
-            Delete
-          </Button>
+        <td className="justify-content-centers">
+          <DeletetModal
+            project_id={project_id}
+            refreshList={() => getFiles(project_id)}
+            filename={filename}
+            url={'apiv1/deletefile'}
+            header={'File'}
+          />
         </td>
       </tr>
     </>

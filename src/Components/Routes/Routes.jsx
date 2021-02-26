@@ -5,7 +5,7 @@ import ProjectsPage from '../ProjectsPage/ProjectsPage';
 
 const routesData = [
   { component: MainPage, path: '/', exact: true },
-  { component: ProjectsPage, path: '/ProjectsPage' },
+  { component: ProjectsPage, path: '/ProjectsPage', private: true },
 ];
 
 const Routes = () =>

@@ -4,19 +4,17 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import api from '../../Utiles/api';
 
-export default function NewProjectModal({
-  showModal,
-  NewProjectBtn,
-  setProjectList,
-}) {
-  const handleClose = () => {
-    NewProjectBtn(false);
-    setErr(false);
-  };
+export default function NewProjectModal({ refreshList }) {
   const [projectName, setProjectName] = useState('');
   const [showErr, setErr] = useState(false);
+  const [newProjectBtn, setNewProjectBtn] = useState(false);
 
   const user_id = '1c9d2f2d-af8a-4be7-bf06-86295e6e3001';
+
+  const handleClose = () => {
+    setErr(false);
+    setNewProjectBtn(false);
+  };
 
   const handleNewProject = async () => {
     if (projectName.length > 0) {
@@ -27,10 +25,11 @@ export default function NewProjectModal({
           user_id: user_id,
         })
         .then((res) => {
-          setProjectList([]);
+          refreshList();
         });
-      NewProjectBtn(false);
+      setNewProjectBtn(false);
       setErr(false);
+      setProjectName('');
     } else {
       setErr(true);
     }
@@ -38,7 +37,9 @@ export default function NewProjectModal({
 
   return (
     <div>
-      <Modal show={showModal} onHide={handleClose} centered>
+      <Button onClick={() => setNewProjectBtn(true)}>New Project</Button>
+
+      <Modal show={newProjectBtn} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Create New Project</Modal.Title>
         </Modal.Header>

@@ -6,12 +6,13 @@ import Spinner from 'react-bootstrap/Spinner';
 
 export default function DeletetModal({
   project_id,
-  resetDeleteID,
+  refreshList,
   filename,
   url,
   header,
 }) {
   const [spinner, setSpinner] = useState(false);
+  const [show, setShow] = useState(false);
 
   const deleteProject = () => {
     setSpinner(true);
@@ -20,16 +21,26 @@ export default function DeletetModal({
         project_id: project_id,
         filename: filename,
       })
-      .then(() => resetDeleteID(null));
+      .then(() => {
+        setShow(false);
+        refreshList();
+      });
   };
 
   const handleClose = () => {
-    if (!spinner) resetDeleteID(null);
+    if (!spinner) setShow(false);
   };
 
+  //Open Upload
+  const handleShow = () => setShow(true);
+
   return (
-    <div>
-      <Modal show={true} onHide={() => handleClose()}>
+    <>
+      <Button size="sm" variant="danger" className="mr-1" onClick={handleShow}>
+        Delete
+      </Button>
+
+      <Modal show={show} onHide={() => handleClose()}>
         <Modal.Header closeButton>
           <Modal.Title>Delete {header}</Modal.Title>
         </Modal.Header>
@@ -45,6 +56,6 @@ export default function DeletetModal({
           {spinner && <p className="text-danger"> Do Not Close Window</p>}
         </Modal.Footer>
       </Modal>
-    </div>
+    </>
   );
 }

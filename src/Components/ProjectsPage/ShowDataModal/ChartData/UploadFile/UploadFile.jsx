@@ -5,11 +5,13 @@ import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import TableExample from './TableExample';
 import api from '../../../../Utiles/api';
+import axios from 'axios';
 
 //Need find soluthin on duplicated file names
 
 export default function UploadFile({ project, getFiles }) {
   const [show, setShow] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState(0);
   const [file, setFile] = useState({
     fileName: '',
     file: [],
@@ -23,6 +25,10 @@ export default function UploadFile({ project, getFiles }) {
       setValidFile(false);
     else setValidFile(true);
   }, [file]);
+
+  useEffect(() => {
+    console.log(uploadStatus);
+  }, [uploadStatus]);
 
   //Close Upload
   const handleClose = () => {
@@ -47,10 +53,22 @@ export default function UploadFile({ project, getFiles }) {
     formData.append('file', file.file);
     formData.append('filename', file.fileName);
     formData.append('project_id', project);
-    api.post('apiv1/csv/newproject', formData).then(() => {
-      getFiles(project);
-      handleClose();
-    });
+    axios
+      .post('http://localhost:5000/apiv1/csv/newproject', formData, {
+        onUploadProgress: (ProgressEvent) => {
+          console.log(ProgressEvent.loaded);
+          setUploadStatus(
+            parseInt(
+              Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)
+            )
+          );
+          setUploadStatus(0);
+        },
+      })
+      .then(() => {
+        getFiles(project);
+        handleClose();
+      });
   };
 
   return (
@@ -97,17 +115,17 @@ export default function UploadFile({ project, getFiles }) {
         </Modal.Body>
         <Modal.Footer className="justify-content-start">
           {!spinner && (
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-          )}
-          {!spinner && (
             <Button
               disabled={!validFile}
               variant="primary"
               onClick={handleUpload}
             >
               Upload
+            </Button>
+          )}
+          {!spinner && (
+            <Button variant="secondary" onClick={handleClose}>
+              Close
             </Button>
           )}
           {spinner && <Spinner animation="border" />}
