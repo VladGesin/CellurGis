@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import TableExample from './TableExample';
-import api from '../../../../Utiles/api';
-import axios from 'axios';
+import DtTableExample from './DtTableExample';
+import SiteTableExample from './SiteTableExample';
+import ProjectsContext from '../../../Context/projects/projectsContext';
 
 //Need find soluthin on duplicated file names
 
-export default function UploadFile({ project, getFiles }) {
+export default function UploadFile({ aplyBtn, type, header }) {
+  const projectsContext = useContext(ProjectsContext);
+
   const [show, setShow] = useState(false);
-  const [uploadStatus, setUploadStatus] = useState(0);
   const [file, setFile] = useState({
     fileName: '',
     file: [],
@@ -25,10 +26,6 @@ export default function UploadFile({ project, getFiles }) {
       setValidFile(false);
     else setValidFile(true);
   }, [file]);
-
-  useEffect(() => {
-    console.log(uploadStatus);
-  }, [uploadStatus]);
 
   //Close Upload
   const handleClose = () => {
@@ -47,34 +44,20 @@ export default function UploadFile({ project, getFiles }) {
   const handleShow = () => setShow(true);
 
   //Upload File
-  const handleUpload = () => {
+  const handleUpload = async () => {
     setSpinner(true);
     const formData = new FormData();
     formData.append('file', file.file);
     formData.append('filename', file.fileName);
-    formData.append('project_id', project);
-    axios
-      .post('http://localhost:5000/apiv1/csv/newproject', formData, {
-        onUploadProgress: (ProgressEvent) => {
-          console.log(ProgressEvent.loaded);
-          setUploadStatus(
-            parseInt(
-              Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total)
-            )
-          );
-          setUploadStatus(0);
-        },
-      })
-      .then(() => {
-        getFiles(project);
-        handleClose();
-      });
+    formData.append('project_id', projectsContext.openModalId);
+    await aplyBtn(formData);
+    handleClose();
   };
 
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Upload File
+        {header}
       </Button>
 
       <Modal show={show} onHide={handleClose}>
@@ -110,7 +93,8 @@ export default function UploadFile({ project, getFiles }) {
                 />
               </Form.File>
             </Form.Group>
-            <TableExample />
+            {type === 'UploadDT' && <DtTableExample />}
+            {type === 'SiteDB' && <SiteTableExample />}
           </div>
         </Modal.Body>
         <Modal.Footer className="justify-content-start">

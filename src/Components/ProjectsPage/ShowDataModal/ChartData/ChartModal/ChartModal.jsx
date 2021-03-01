@@ -21,6 +21,7 @@ export default function ChartModal({ btnText, project_id, filename, sites }) {
     return () => {
       setCharts([]);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchData = async () => {

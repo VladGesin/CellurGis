@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Table from 'react-bootstrap/Table';
 import TableRow from './TableRow';
+import ProjectFilesContaxt from '../../../../../Context/projectFiles/projectFilesContaxt';
 
-export default function FileTable({ projectFiles, project_id, getFiles }) {
-  if (projectFiles.length === 0)
+export default function FileTable() {
+  const projectFilesContaxt = useContext(ProjectFilesContaxt);
+
+  if (projectFilesContaxt.files.length === 0)
     return <h2>No files in the database related to the project</h2>;
 
   return (
@@ -22,14 +25,15 @@ export default function FileTable({ projectFiles, project_id, getFiles }) {
           </tr>
         </thead>
         <tbody>
-          {projectFiles.map((row, index) => {
+          {projectFilesContaxt.files.map((file, index) => {
             return (
               <TableRow
-                filename={row.file_name}
+                filename={file.file_name}
                 index={index}
-                key={row.file_name}
-                project_id={project_id}
-                getFiles={getFiles}
+                key={file.file_name}
+                project_id={file.project_id}
+                sites={file.data.fileSites}
+                countPoints={file.data.fileCount.count}
               />
             );
           })}

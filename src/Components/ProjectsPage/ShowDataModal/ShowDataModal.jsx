@@ -1,38 +1,39 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import './ShowDataModal.css';
 import ChartPage from './ChartData/ChartPage';
+import ProjectsContext from '../../../Context/projects/projectsContext';
+import ProjectFilesState from '../../../Context/projectFiles/ProjectFilesState';
 
-export default function ShowDataModal({ openData }) {
-  const [show, setShow] = useState({ openData });
-  const [project_id, setProject_id] = useState(false);
+export default function ShowDataModal() {
+  const [classes, setClasses] = useState(' data-modal slide-in ');
 
-  const classes = `${show.class}  data-modal hide`;
+  const projectContext = useContext(ProjectsContext);
 
-  useEffect(() => {
-    setShow(openData);
-    setProject_id(openData.project_id);
-  }, [openData, openData.project_id]);
+  const closeDataModal = () => {
+    projectContext.closeProject();
+  };
 
-  if (!project_id) return null;
-  else if (openData.openCharts) {
+  if (!projectContext.openModalId) return null;
+  else {
     return (
       <div className={classes}>
-        <Button
-          className="side-btn"
-          onClick={() => {
-            setShow({ class: 'slide-out' });
-            setTimeout(() => {
-              setProject_id(false);
-            }, 700);
-          }}
-        >
-          Close
-        </Button>
-        <ChartPage className="w-100" project={project_id} />
+        <ProjectFilesState>
+          <Button
+            className="d-block "
+            onClick={() => {
+              setClasses(' data-modal slide-out');
+              setTimeout(() => {
+                closeDataModal();
+                setClasses(' data-modal slide-in ');
+              }, 700);
+            }}
+          >
+            Close
+          </Button>
+          <ChartPage className=" w-100" project={projectContext.openModalId} />
+        </ProjectFilesState>
       </div>
     );
-  } else {
-    return null;
   }
 }

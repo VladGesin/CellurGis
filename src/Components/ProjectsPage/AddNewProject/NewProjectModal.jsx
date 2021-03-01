@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import api from '../../Utiles/api';
+import ProjectsContext from '../../../Context/projects/projectsContext';
 
-export default function NewProjectModal({ refreshList }) {
+export default function NewProjectModal() {
   const [projectName, setProjectName] = useState('');
   const [showErr, setErr] = useState(false);
   const [newProjectBtn, setNewProjectBtn] = useState(false);
 
-  const user_id = '1c9d2f2d-af8a-4be7-bf06-86295e6e3001';
+  const projectContext = useContext(ProjectsContext);
 
   const handleClose = () => {
     setErr(false);
@@ -19,14 +19,7 @@ export default function NewProjectModal({ refreshList }) {
   const handleNewProject = async () => {
     if (projectName.length > 0) {
       setErr(false);
-      await api
-        .post('apiv1/createnewproject', {
-          project_name: projectName,
-          user_id: user_id,
-        })
-        .then((res) => {
-          refreshList();
-        });
+      projectContext.createNewProject(projectName);
       setNewProjectBtn(false);
       setErr(false);
       setProjectName('');

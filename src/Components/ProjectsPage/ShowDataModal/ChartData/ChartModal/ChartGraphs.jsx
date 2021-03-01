@@ -10,10 +10,12 @@ export default function ChartGraphs({ siteData }) {
 
   useEffect(() => {
     getGreaterCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     getGreaterCount();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rsrpRef]);
 
   const getGreaterCount = async () => {

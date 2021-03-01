@@ -1,45 +1,47 @@
-import React, { useState, useEffect } from 'react';
-import UploadFile from './UploadFile/UploadFile';
+import React, { useEffect, useContext } from 'react';
+import UploadFile from '../../UploadFile/UploadFile';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import api from '../../../Utiles/api';
 import FileTable from './FilesTable/FileTable';
+import ProjectFilesContaxt from '../../../../Context/projectFiles/projectFilesContaxt';
+import ProjectsContext from '../../../../Context/projects/projectsContext';
 
 export default function ChartPage({ project }) {
-  const [projectFiles, setProjectFiles] = useState([]);
+  const projectFilesContaxt = useContext(ProjectFilesContaxt);
+  const projectsContext = useContext(ProjectsContext);
 
   useEffect(() => {
-    getProjectFiles(project);
-
+    projectFilesContaxt.getProjectFiles(project);
     return () => {
-      setProjectFiles([]);
+      projectFilesContaxt.closeModal();
     };
-  }, [project]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const getProjectFiles = (project) => {
-    api.get(`apiv1/projectfilenames/${project}`).then((res) => {
-      setProjectFiles(res.data);
+  const onApplyBtn = async (data) => {
+    await projectFilesContaxt.uploadFile(data).then(() => {
+      projectFilesContaxt.getProjectFiles(projectsContext.openModalId);
     });
   };
 
   return (
-    <Container fluid>
+    <Container className="mt-2" fluid>
       <Row>
         <Col>
           <h1>Project ID: {project} Files Uploaded</h1>
         </Col>{' '}
         <Col md={{ span: 2, offset: 2 }} className=" align-self-center ">
-          <UploadFile project={project} getFiles={getProjectFiles} />
+          <UploadFile
+            aplyBtn={onApplyBtn}
+            type={'UploadDT'}
+            header={'Upload DT File'}
+          />
         </Col>
       </Row>
       <Row>
         <Col>
-          <FileTable
-            projectFiles={projectFiles}
-            project_id={project}
-            getFiles={getProjectFiles}
-          />{' '}
+          <FileTable />
         </Col>
       </Row>
     </Container>

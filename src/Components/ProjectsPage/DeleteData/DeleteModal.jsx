@@ -1,34 +1,17 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import api from '../../Utiles/api';
-import Spinner from 'react-bootstrap/Spinner';
 
-export default function DeletetModal({
-  project_id,
-  refreshList,
-  filename,
-  url,
-  header,
-}) {
-  const [spinner, setSpinner] = useState(false);
+export default function DeletetModal({ applyBtn, header }) {
   const [show, setShow] = useState(false);
 
   const deleteProject = () => {
-    setSpinner(true);
-    api
-      .delete(`${url}`, {
-        project_id: project_id,
-        filename: filename,
-      })
-      .then(() => {
-        setShow(false);
-        refreshList();
-      });
+    applyBtn();
+    setShow(false);
   };
 
   const handleClose = () => {
-    if (!spinner) setShow(false);
+    setShow(false);
   };
 
   //Open Upload
@@ -49,11 +32,9 @@ export default function DeletetModal({
           <Button variant="primary" onClick={() => handleClose()}>
             No
           </Button>
-          <Button disabled={spinner} variant="danger" onClick={deleteProject}>
+          <Button variant="danger" onClick={deleteProject}>
             Yes
           </Button>
-          {spinner && <Spinner animation="border" />}
-          {spinner && <p className="text-danger"> Do Not Close Window</p>}
         </Modal.Footer>
       </Modal>
     </>

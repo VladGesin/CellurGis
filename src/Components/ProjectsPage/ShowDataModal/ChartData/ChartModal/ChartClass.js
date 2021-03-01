@@ -1,4 +1,4 @@
-import api from '../../../../Utiles/api';
+import api from '../../../../Utils/api';
 
 class Chart {
   constructor(table, project_id, filename) {
