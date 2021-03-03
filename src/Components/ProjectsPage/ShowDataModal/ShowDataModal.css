@@ -1,0 +1,60 @@
+.data-modal {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+  background: white;
+  transform: translateX(100%);
+  -webkit-transform: translateX(100%);
+  display: flex;
+}
+
+.slide-in {
+  animation: slide-in 1s forwards;
+  -webkit-animation: slide-in 1s forwards;
+}
+
+.slide-out {
+  animation: slide-out 1s forwards;
+  -webkit-animation: slide-out 1s forwards;
+}
+
+@keyframes slide-in {
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@-webkit-keyframes slide-in {
+  100% {
+    -webkit-transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@-webkit-keyframes slide-out {
+  0% {
+    -webkit-transform: translateX(0%);
+  }
+  100% {
+    -webkit-transform: translateX(100%);
+  }
+}
+
+.hide {
+  display: hide;
+}
+
+.side-btn {
+  height: fit-content;
+  align-self: center;
+  margin-left: 20px;
+}

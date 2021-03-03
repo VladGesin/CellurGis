@@ -1,0 +1,13 @@
+.project_card {
+  border-radius: 10px;
+  border-color: black;
+  border-width: 2px;
+  width: fit-content;
+  border-style: solid;
+}
+
+.footer {
+  border-top: solid;
+  border-color: gray;
+  color: gray;
+}

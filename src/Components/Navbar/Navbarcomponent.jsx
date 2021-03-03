@@ -15,11 +15,11 @@ const Navbarcomponent = () => {
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav>
             <NavLink
-              to="/Workspace"
+              to="/ProjectsPage"
               activeClassName="active"
               className=" links-container"
             >
-              Graphs
+              Project's
             </NavLink>
             {/* <NavLink to="/Mappage" activeClassName="active" className=" links-container">
 							{' '}
