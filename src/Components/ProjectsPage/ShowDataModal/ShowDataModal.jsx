@@ -4,15 +4,12 @@ import './ShowDataModal.css';
 import ChartPage from './ChartData/ChartPage';
 import ProjectsContext from '../../../Context/projects/projectsContext';
 import ProjectFilesState from '../../../Context/projectFiles/ProjectFilesState';
+import { BsBoxArrowLeft } from 'react-icons/bs';
 
 export default function ShowDataModal() {
   const [classes, setClasses] = useState(' data-modal slide-in ');
 
   const projectContext = useContext(ProjectsContext);
-
-  const closeDataModal = () => {
-    projectContext.closeProject();
-  };
 
   if (!projectContext.openModalId) return null;
   else {
@@ -24,12 +21,14 @@ export default function ShowDataModal() {
             onClick={() => {
               setClasses(' data-modal slide-out');
               setTimeout(() => {
-                closeDataModal();
+                projectContext.closeProject();
                 setClasses(' data-modal slide-in ');
               }, 700);
             }}
           >
-            Close
+            <div className="align-self-start">
+              <BsBoxArrowLeft />
+            </div>
           </Button>
           <ChartPage className=" w-100" project={projectContext.openModalId} />
         </ProjectFilesState>

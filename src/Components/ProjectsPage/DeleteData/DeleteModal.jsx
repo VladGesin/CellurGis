@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { MdDelete } from 'react-icons/md';
 
 export default function DeletetModal({ applyBtn, header }) {
   const [show, setShow] = useState(false);
@@ -20,7 +21,7 @@ export default function DeletetModal({ applyBtn, header }) {
   return (
     <>
       <Button size="sm" variant="danger" className="mr-1" onClick={handleShow}>
-        Delete
+        <MdDelete />
       </Button>
 
       <Modal show={show} onHide={() => handleClose()}>

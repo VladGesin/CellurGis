@@ -1,15 +1,13 @@
 .project_card {
-  border-radius: 20px;
+  border-radius: 10px;
   border-color: black;
-  border-width: 3px;
+  border-width: 2px;
   width: fit-content;
   border-style: solid;
-  margin-left: 2px;
-  display: inline-block;
-  margin-top: 2px;
 }
 
-#footer {
-  margin-left: 2px;
-  margin-right: 2px;
+.footer {
+  border-top: solid;
+  border-color: gray;
+  color: gray;
 }
