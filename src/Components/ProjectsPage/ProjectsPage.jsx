@@ -9,11 +9,11 @@ import UploadFile from './UploadFile/UploadFile';
 import axios from 'axios';
 
 const uploadDataBase = async (databaseFile) => {
-  await axios.post(
-    'http://localhost:5000/apiv2/csv/sitedatabase',
-    databaseFile,
-    {}
-  );
+  await axios
+    .post('http://localhost:5000/apiv2/csv/sitedatabase', databaseFile, {})
+    .catch((error) => {
+      console.log(error);
+    });
 };
 
 const ProjectsPage = () => {
