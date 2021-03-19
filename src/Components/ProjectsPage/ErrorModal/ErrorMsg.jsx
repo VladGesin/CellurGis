@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function ErrorMsg({ headline, body }) {
+function ErrorMsg({ headline, body, type }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -14,7 +14,7 @@ function ErrorMsg({ headline, body }) {
 
   return (
     show && (
-      <div className="alert alert-danger" role="alert">
+      <div className={`alert ${type}`} role="alert">
         <h4 className="alert-heading">{headline}</h4>
         <p className="mb-0">{body}</p>
       </div>

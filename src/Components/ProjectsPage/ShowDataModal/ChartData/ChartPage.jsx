@@ -11,7 +11,11 @@ import ErrorModal from '../../ErrorModal/ErrorMsg';
 export default function ChartPage({ project }) {
   const projectFilesContaxt = useContext(ProjectFilesContaxt);
   const projectsContext = useContext(ProjectsContext);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState({
+    msg: '',
+    header: '',
+    type: '',
+  });
   useEffect(() => {
     projectFilesContaxt.getProjectFiles(project);
     return () => {
@@ -24,21 +28,29 @@ export default function ChartPage({ project }) {
     await projectFilesContaxt
       .uploadFile(data)
       .then(() => {
+        setErrorMsg({
+          msg: 'DriveTest Uploud Successfully',
+          header: 'DriveTest Uploud',
+          type: 'alert-success',
+        });
         projectFilesContaxt.getProjectFiles(projectsContext.openModalId);
       })
       .catch((error) => {
-        console.log(error.response.data.message);
-        setErrorMsg(error.response.data.message);
+        setErrorMsg({
+          msg: error.response.data.message,
+          header: 'Error Uplouding DataBase File',
+          type: 'alert-danger',
+        });
+      })
+      .finally(() => {
         setTimeout(() => {
-          setErrorMsg('');
+          setErrorMsg({ msg: '', header: '', type: '' });
         }, 3000);
-        //Add Contaxt Error
       });
   };
 
   return (
     <Container className="mt-2" fluid>
-      <ErrorModal headline={'Error Uplouding DT File'} body={errorMsg} />
       <Row>
         <Col>
           <h1>Project ID: {project} Files Uploaded</h1>
@@ -54,6 +66,11 @@ export default function ChartPage({ project }) {
       <Row>
         <Col>
           <FileTable />
+          <ErrorModal
+            headline={errorMsg.header}
+            body={errorMsg.msg}
+            type={errorMsg.type}
+          />
         </Col>
       </Row>
     </Container>

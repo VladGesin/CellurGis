@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import NewProjectModal from './AddNewProject/NewProjectModal';
 import ProjectList from './ProjectList/ProjectList';
@@ -7,16 +7,39 @@ import './ProjectsPage.css';
 import ProjectsState from '../../Context/projects/ProjectsState';
 import UploadFile from './UploadFile/UploadFile';
 import axios from 'axios';
-
-const uploadDataBase = async (databaseFile) => {
-  await axios
-    .post('http://localhost:5000/apiv2/csv/sitedatabase', databaseFile, {})
-    .catch((error) => {
-      console.log(error);
-    });
-};
+import ErrorModal from './ErrorModal/ErrorMsg';
 
 const ProjectsPage = () => {
+  const [errorMsg, setErrorMsg] = useState({
+    msg: '',
+    header: '',
+    type: '',
+  });
+
+  const uploadDataBase = async (databaseFile) => {
+    await axios
+      .post('http://localhost:5000/apiv2/csv/sitedatabase', databaseFile, {})
+      .then((res) => {
+        setErrorMsg({
+          msg: res.data,
+          header: 'DataBase Uploud Successfully',
+          type: 'alert-success',
+        });
+      })
+      .catch((error) => {
+        setErrorMsg({
+          msg: error.response.data.message,
+          header: 'Error Uplouding DataBase File',
+          type: 'alert-danger',
+        });
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setErrorMsg({ msg: '', header: '', type: '' });
+        }, 3000);
+      });
+  };
+
   return (
     <div>
       <ProjectsState>
@@ -38,6 +61,11 @@ const ProjectsPage = () => {
         </Container>
         <div id="project-List" className="mt-2 mx-5">
           <ProjectList />
+          <ErrorModal
+            headline={errorMsg.header}
+            body={errorMsg.msg}
+            type={errorMsg.type}
+          />
         </div>
       </ProjectsState>
     </div>

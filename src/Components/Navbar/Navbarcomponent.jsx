@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+// eslint-disable-next-line
 import { NavLink } from 'react-router-dom';
 import './Navbar.css';
 
@@ -14,13 +15,13 @@ const Navbarcomponent = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav>
-            <NavLink
+            {/* <NavLink
               to="/ProjectsPage"
               activeClassName="active"
               className=" links-container"
             >
               Project's
-            </NavLink>
+            </NavLink> */}
             {/* <NavLink to="/Mappage" activeClassName="active" className=" links-container">
 							{' '}
 							Map

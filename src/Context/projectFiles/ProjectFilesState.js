@@ -66,11 +66,14 @@ const ProjectFilesState = (props) => {
   };
 
   const uploadFile = async (formData) => {
-    await axios.post('http://localhost:5000/apiv1/csv/newdtfile', formData, {});
-    dispatch({
-      type: CREATE_NEW_FILE,
-      payload: true,
-    });
+    await axios
+      .post('http://localhost:5000/apiv1/csv/newdtfile', formData, {})
+      .then(() => {
+        dispatch({
+          type: CREATE_NEW_FILE,
+          payload: true,
+        });
+      });
   };
 
   return (
