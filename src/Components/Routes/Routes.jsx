@@ -1,11 +1,12 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
+// eslint-disable-next-line
 import MainPage from '../WelcomePage/login';
 import ProjectsPage from '../ProjectsPage/ProjectsPage';
 
 const routesData = [
-  { component: MainPage, path: '/', exact: true },
-  { component: ProjectsPage, path: '/ProjectsPage', private: true },
+  { component: ProjectsPage, path: '/', exact: true },
+  // { component: ProjectsPage, path: '/ProjectsPage', private: true },
 ];
 
 const Routes = () =>
