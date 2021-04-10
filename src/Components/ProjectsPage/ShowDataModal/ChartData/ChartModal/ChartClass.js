@@ -1,10 +1,10 @@
 import api from '../../../../Utils/api';
 
 class Chart {
-  constructor(table, project_id, filename) {
+  constructor(table, project_id, filename, site) {
     this.project_id = project_id;
     this.filename = filename;
-    this.site_id = null;
+    this.site_id = site;
     this.table = table;
   }
 

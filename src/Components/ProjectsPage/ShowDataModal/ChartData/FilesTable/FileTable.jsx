@@ -19,8 +19,8 @@ export default function FileTable() {
             <th>File Name</th>
             <th>Site Id's</th>
             <th>Points count</th>
-            <th>Distance from site</th>
-            <th>Distance from Border</th>
+            {/* <th>Distance from site</th>
+            <th>Distance from Border</th> */}
             <th>Delete</th>
           </tr>
         </thead>

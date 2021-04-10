@@ -38,7 +38,7 @@ export default function ChartGraphs({ siteData }) {
   return (
     <>
       <div className="d-flex justify-content-between mt-2 ">
-        <h3 className="d-flex align-items-center">{siteData.site_id}</h3>
+        {/* <h3 className="d-flex align-items-center">{siteData.site_id}</h3> */}
         <div className="d-flex align-items-center">
           <Form.Label column="sm">Signal strength</Form.Label>
           <Form.Control

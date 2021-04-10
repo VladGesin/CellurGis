@@ -1,0 +1,7 @@
+.leaflet-container {
+  height: 500px;
+  width: 100%;
+}
+.mapContainer {
+  margin-bottom: 5px;
+}
