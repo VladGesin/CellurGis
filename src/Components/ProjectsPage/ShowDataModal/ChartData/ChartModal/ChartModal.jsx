@@ -73,6 +73,7 @@ export default function ChartModal({ btnText, project_id, filename, sites }) {
             id="uncontrolled-tab-example"
           >
             {charts.map((siteData) => {
+              // console.log(siteData);
               return (
                 <Tab
                   eventKey={siteData.site_id}

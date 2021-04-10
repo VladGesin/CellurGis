@@ -19,8 +19,12 @@ class Chart {
       )
       .then((res) => {
         return res.data.map((dist) => {
-          if (this.table === 'site') return dist.dist_from_site;
-          else if (this.table === 'refLayer') return dist.dist_from_ref;
+          if (this.table === 'site') {
+            if (dist.dist_from_site == null) {
+              return 0;
+            }
+            return dist.dist_from_site;
+          } else if (this.table === 'refLayer') return dist.dist_from_ref;
           else return null;
         });
       });
@@ -84,21 +88,24 @@ class Chart {
   }
 
   getCountRsrp(distances) {
-    const res = Promise.all(
-      distances.map(async (dist) => {
-        const result = await api
-          .get(
-            `apiv1/countrsrp/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
-          )
-          .then((res) => {
-            return res.data.map((count) => {
-              return count.count;
+    if (distances !== 0) {
+      const res = Promise.all(
+        distances.map(async (dist) => {
+          const result = await api
+            .get(
+              `apiv1/countrsrp/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+            )
+            .then((res) => {
+              return res.data.map((count) => {
+                return count.count;
+              });
             });
-          });
-        return result[0];
-      })
-    );
-    return res;
+          return result[0];
+        })
+      );
+      return res;
+    }
+    return 0;
   }
 
   getCountGreaterRsrp(rsrp, distances) {
@@ -129,6 +136,9 @@ class Chart {
       });
     } else
       return distances.map((dist) => {
+        if (dist === 0) {
+          return 0;
+        }
         return dist.toString().concat('Km');
       });
   }
