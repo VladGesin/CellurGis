@@ -1,66 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Marker, Popup } from 'react-leaflet';
-import axios from 'axios';
+import { useEffect, useContext } from 'react';
+import { useMap } from 'react-leaflet';
+import 'leaflet-canvas-marker';
 import L from 'leaflet';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
-import MarkerClusterGroup from 'react-leaflet-markercluster';
-import 'leaflet.markercluster/dist/leaflet.markercluster';
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import MapPointsContaxt from '../../../../Context/mapPoints/mapPointsContaxt';
+import GreenDot from './MarkerPng/green.png';
+import RedDot from './MarkerPng/red.png';
 
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  // shadowUrl: iconShadow,
-});
-export default function MapMarker({ MapContainer }) {
-  const [points, setPoints] = useState([]);
+export default function MapMarker() {
+  const map = useMap();
+  const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
-    getPoints();
-  }, []);
+    if (!map) return;
+    if (mapPointsContaxt.markers.length === 0) return;
+    var ciLayer = L.canvasIconLayer({}).addTo(map);
 
-  const getPoints = async () => {
-    axios
-      .get(`http://localhost:5000/apiv2/getmappoints/56059/1/DT14-03-2021`)
-      .then((res) => {
-        console.log(res.data);
-        const points = res.data.map((point, i) => {
-          // return (
-          // <CanvasMarkersLayer>
-          //   <Marker
-          //     position={[point.latitude, point.longitude]}
-          //     key={'DT14-03-2021' + '56059' + i}
-          //   >
-          //     <Popup style={{ zIndex: 100 }}>
-          //       <ul>
-          //         <li>dist from border: {point.dist_from_ref / 1000}Km</li>
-          //         <li>dist from site: {point.dist_from_site}Km</li>
-          //         <li>RSRP: {point.rsrp}</li>
-          //       </ul>
-          //     </Popup>
-          //   </Marker>
-          // </CanvasMarkersLayer>
-          // );
-        });
-        setPoints(points);
-        // console.log(points);
-      });
-  };
+    // ciLayer.addOnClickListener(function (e, data) {
+    //   console.log(data);
+    // });
+    // ciLayer.addOnHoverListener(function (e, data) {
+    //   console.log(data[0].data._leaflet_id);
+    // });
 
-  return (
-    <div>
-      {/* {points.length > 0 && points} */}
-      <Marker position={[31.931256, 34.85761]}>
-        <Popup style={{ zIndex: 100 }}>
-          <ul>
-            <li>dist from border: Km</li>
-            <li>dist from site: Km</li>
-            <li>RSRP:</li>
-          </ul>
-        </Popup>
-      </Marker>
-    </div>
-  );
+    const iconGreen = L.icon({
+      iconUrl: GreenDot,
+      iconSize: [20, 18],
+      iconAnchor: [10, 9],
+    });
+    const iconRed = L.icon({
+      iconUrl: RedDot,
+      iconSize: [20, 18],
+      iconAnchor: [10, 9],
+    });
+
+    let markers = [];
+    console.log(mapPointsContaxt);
+    // eslint-disable-next-line
+    mapPointsContaxt.markers.map((point, i) => {
+      markers.push(
+        L.marker([point.latitude, point.longitude], {
+          icon: point.rsrp >= mapPointsContaxt.rsrpRef ? iconRed : iconGreen,
+        }).bindPopup(
+          `<ul>
+                <li>dist from border: ${point.dist_from_ref / 1000} Km</li>
+                <li>dist from site: ${point.dist_from_site} Km</li>
+                <li>RSRP: ${point.rsrp} </li>
+              </ul>`
+        )
+      );
+    });
+
+    if (markers.length > 0) ciLayer.addLayers(markers);
+    console.log(markers);
+    map.setView(markers[0]._latlng, 13);
+    // eslint-disable-next-line
+  }, [map, mapPointsContaxt.markers, mapPointsContaxt.rsrpRef]);
+
+  return null;
 }
-L.Marker.prototype.options.icon = DefaultIcon;

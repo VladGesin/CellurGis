@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LineChart from './ChartFiles/LineChart';
 import BarChart from './ChartFiles/BarChart';
 import HoBarChart from './ChartFiles/HoBarChart';
 import Form from 'react-bootstrap/Form';
+import MapPointsContaxt from '../../../../../Context/mapPoints/mapPointsContaxt';
 
 export default function ChartGraphs({ siteData }) {
   const [rsrpRef, setRsrpRef] = useState(-92);
   const [greaterCount, setGreaterCount] = useState([]);
+  const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
     getGreaterCount();
@@ -50,6 +52,7 @@ export default function ChartGraphs({ siteData }) {
               if (e.key === 'Enter') {
                 if (e.target.value < 0) {
                   setRsrpRef(e.target.value);
+                  mapPointsContaxt.updateRefRsrp(e.target.value);
                 }
               }
             }}

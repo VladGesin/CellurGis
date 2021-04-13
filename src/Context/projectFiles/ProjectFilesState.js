@@ -26,6 +26,7 @@ const ProjectFilesState = (props) => {
             `http://localhost:5000/apiv2/getfilesdata/${project}/${file.file_name}`
           )
           .then((res) => {
+            // console.log(res.data);
             return {
               file_name: file.file_name,
               data: res.data,

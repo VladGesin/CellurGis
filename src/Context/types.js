@@ -8,3 +8,7 @@ export const GET_FILES = 'GET_FILES';
 export const CLOSE_MODAL = 'CLOSE_MODAL';
 export const CREATE_NEW_FILE = 'CREATE_NEW_FILE';
 export const DELETE_FILE = 'DELETE_FILE';
+
+export const GET_POINTS = 'GET_POINTS';
+export const DELETE_POINTS = 'DELETE_POINTS';
+export const UPDATE_REF_RSRP = 'UPDATE_REF_RSRP';
