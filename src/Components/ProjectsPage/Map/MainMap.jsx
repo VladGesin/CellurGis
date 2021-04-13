@@ -1,23 +1,8 @@
-import React, { useState } from 'react';
-import L from 'leaflet';
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from 'react-leaflet';
+import React from 'react';
+import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MainMap.css';
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 import MapMarker from './MapMarker/MapMarker';
-import CanvasMarkersLayer from '../../../../node_modules/leaflet-canvas-marker/src/plugin/leaflet.canvas-markers';
-
-let DefaultIcon = L.icon({
-  iconUrl: icon,
-  shadowUrl: iconShadow,
-});
 
 export default function MainMap() {
   return (
