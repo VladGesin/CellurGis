@@ -2,12 +2,13 @@
   border-radius: 10px;
   border-color: black;
   border-width: 2px;
-  width: fit-content;
+  width: 100%;
   border-style: solid;
   margin-bottom: 4px;
 }
 
 .footer {
+  border-width: 100%;
   border-top: solid;
   border-color: gray;
   color: gray;

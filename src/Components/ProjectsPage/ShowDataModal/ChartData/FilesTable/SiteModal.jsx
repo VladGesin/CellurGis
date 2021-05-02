@@ -5,6 +5,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
 import ChartModal from '../ChartModal/ChartModal';
 import MainMap from '../../../Map/MainMap';
+import MapMarker from '../../../Map/MapMarker/MapMarker'
 import MapPointsContaxt from '../../../../../Context/mapPoints/mapPointsContaxt';
 
 export default function SiteModal({ filename, project_id, site }) {
@@ -15,16 +16,18 @@ export default function SiteModal({ filename, project_id, site }) {
   const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
-    if (show) fetchData();
+
+    const fetchData = async () => {
+      await mapPointsContaxt.setMapData(filename, project_id, site.site_id);
+    };
+
+    if (show)  fetchData();
+
     return () => {
       mapPointsContaxt.deleteMapData();
     };
     // eslint-disable-next-line
   }, [show]);
-
-  const fetchData = async () => {
-    await mapPointsContaxt.setMapData(filename, project_id, site.site_id);
-  };
 
   return (
     <>
@@ -42,7 +45,9 @@ export default function SiteModal({ filename, project_id, site }) {
           <Modal.Title>{site.site_id}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MainMap />
+          <MainMap >
+            <MapMarker/>
+          </MainMap>
           <Tabs
             id="controlled-tab-example"
             activeKey={key}

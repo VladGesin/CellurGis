@@ -8,6 +8,7 @@ import ProjectsState from '../../Context/projects/ProjectsState';
 import UploadFile from './UploadFile/UploadFile';
 import axios from 'axios';
 import ErrorModal from './ErrorModal/ErrorMsg';
+import MainMap from './Map/MainMap'
 
 const ProjectsPage = () => {
   const [errorMsg, setErrorMsg] = useState({
@@ -41,7 +42,8 @@ const ProjectsPage = () => {
   };
 
   return (
-    <div>
+    <div className='row'>
+      <div className='col-5'>
       <ProjectsState>
         <ShowDataModal />
         <Container fluid className="d-flex">
@@ -68,6 +70,10 @@ const ProjectsPage = () => {
           />
         </div>
       </ProjectsState>
+    </div>
+    <div className='col'>
+        <MainMap/>
+      </div>
     </div>
   );
 };

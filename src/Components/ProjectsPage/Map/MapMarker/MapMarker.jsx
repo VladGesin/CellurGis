@@ -34,7 +34,6 @@ export default function MapMarker() {
     });
 
     let markers = [];
-    console.log(mapPointsContaxt);
     // eslint-disable-next-line
     mapPointsContaxt.markers.map((point, i) => {
       markers.push(
@@ -51,7 +50,6 @@ export default function MapMarker() {
     });
 
     if (markers.length > 0) ciLayer.addLayers(markers);
-    console.log(markers);
     map.setView(markers[0]._latlng, 13);
     // eslint-disable-next-line
   }, [map, mapPointsContaxt.markers, mapPointsContaxt.rsrpRef]);

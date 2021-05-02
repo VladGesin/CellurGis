@@ -2,9 +2,8 @@ import React from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import './MainMap.css';
-import MapMarker from './MapMarker/MapMarker';
 
-export default function MainMap() {
+export default function MainMap(props) {
   return (
     <div className="d-block h-70 mapContainer">
       <MapContainer
@@ -17,8 +16,7 @@ export default function MainMap() {
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-
-        <MapMarker MapContainer={MapContainer} />
+        {props.children}
       </MapContainer>
     </div>
   );
