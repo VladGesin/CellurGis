@@ -1,7 +1,18 @@
 .leaflet-container {
-  height: 500px;
+  /* height: 500px;
+  width: 100%; */
+  position: absolute;
+  top: 0;
+  bottom: 0;
   width: 100%;
 }
 .mapContainer {
+  position: relative;
   margin-bottom: 5px;
+  height: 500px;
+}
+
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
 }

@@ -13,8 +13,8 @@ export default function ProjectCard({ project }) {
   };
 
   return (
-    <div className="d-inline-flex project_card mr-2 mt-2">
-      <div className="p-2">
+    <div className="d-flex project_card mr-2 mt-2">
+      <div className="p-2 w-100">
         <h5 className="header">
           <strong>Project Name: </strong>
           {project.project_name}
