@@ -1,27 +1,27 @@
-import React, { useState, useContext, useEffect } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Tabs from 'react-bootstrap/Tabs';
-import Tab from 'react-bootstrap/Tab';
-import ChartModal from '../ChartModal/ChartModal';
-import MainMap from '../../../Map/MainMap';
-import MapMarker from '../../../Map/MapMarker/MapMarker'
-import MapPointsContaxt from '../../../../../Context/mapPoints/mapPointsContaxt';
+import React, { useState, useContext, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Tabs from "react-bootstrap/Tabs";
+import Tab from "react-bootstrap/Tab";
+import ChartModal from "../ChartModal/ChartModal";
+import MainMap from "../../../Map/MainMap";
+import MapDriveTestPoints from "../../../Map/MapMarker/MapDriveTestPoints";
+import MapPointsContaxt from "../../../../../Context/mapPoints/mapPointsContaxt";
+import "../../../Map/MainMap.css";
 
 export default function SiteModal({ filename, project_id, site }) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(false);
-  const [key, setKey] = useState('Distance_From_Site');
+  const [key, setKey] = useState("Distance_From_Site");
   const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
-
     const fetchData = async () => {
       await mapPointsContaxt.setMapData(filename, project_id, site.site_id);
     };
 
-    if (show)  fetchData();
+    if (show) fetchData();
 
     return () => {
       mapPointsContaxt.deleteMapData();
@@ -45,9 +45,11 @@ export default function SiteModal({ filename, project_id, site }) {
           <Modal.Title>{site.site_id}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <MainMap >
-            <MapMarker/>
-          </MainMap>
+          <div className="mapContainer">
+            <MainMap>
+              <MapDriveTestPoints />
+            </MainMap>
+          </div>
           <Tabs
             id="controlled-tab-example"
             activeKey={key}
@@ -56,7 +58,7 @@ export default function SiteModal({ filename, project_id, site }) {
             <Tab eventKey="Distance_From_Site" title="Distance From Site">
               {show && (
                 <ChartModal
-                  btnText={'Distance_From_Site'}
+                  btnText={"Distance_From_Site"}
                   project_id={project_id}
                   filename={filename}
                   site={site}
@@ -67,7 +69,7 @@ export default function SiteModal({ filename, project_id, site }) {
             <Tab eventKey="Distance_From_Border" title="Distance From Border">
               {show && (
                 <ChartModal
-                  btnText={'Distance_From_Border'}
+                  btnText={"Distance_From_Border"}
                   project_id={project_id}
                   filename={filename}
                   site={site}

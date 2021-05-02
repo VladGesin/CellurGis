@@ -2,6 +2,9 @@
 
 # dependencies
 /node_modules
+/CSV Test
+/dataFiles
+
 /.pnp
 .pnp.js
 

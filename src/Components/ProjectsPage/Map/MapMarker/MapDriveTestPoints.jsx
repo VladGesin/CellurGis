@@ -1,12 +1,12 @@
-import { useEffect, useContext } from 'react';
-import { useMap } from 'react-leaflet';
-import 'leaflet-canvas-marker';
-import L from 'leaflet';
-import MapPointsContaxt from '../../../../Context/mapPoints/mapPointsContaxt';
-import GreenDot from './MarkerPng/green.png';
-import RedDot from './MarkerPng/red.png';
+import { useEffect, useContext } from "react";
+import { useMap } from "react-leaflet";
+import "leaflet-canvas-marker";
+import L from "leaflet";
+import MapPointsContaxt from "../../../../Context/mapPoints/mapPointsContaxt";
+import GreenDot from "./MarkerPng/green.png";
+import RedDot from "./MarkerPng/red.png";
 
-export default function MapMarker() {
+export default function MapDriveTestPoints() {
   const map = useMap();
   const mapPointsContaxt = useContext(MapPointsContaxt);
 

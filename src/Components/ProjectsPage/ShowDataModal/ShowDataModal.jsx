@@ -23,7 +23,7 @@ export default function ShowDataModal() {
               setTimeout(() => {
                 projectContext.closeProject();
                 setClasses(' data-modal slide-in ');
-              }, 700);
+              }, 1000);
             }}
           >
             <div className="align-self-start">
