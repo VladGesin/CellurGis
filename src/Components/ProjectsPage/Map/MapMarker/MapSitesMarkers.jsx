@@ -25,12 +25,13 @@ export default function MapSitesMarkers() {
 
   const getMarkers = async () => {
     axios.get("http://localhost:5000/apiv2/sites/map").then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       const markers = res.data.map((site) => {
         return (
           <Marker
             position={[site.latitude, site.longitude]}
             icon={customMarkerIcon}
+            key={site.site_name}
           >
             <Popup>{site.site_name}</Popup>
           </Marker>

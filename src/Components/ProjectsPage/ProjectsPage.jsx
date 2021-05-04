@@ -43,7 +43,7 @@ const ProjectsPage = () => {
   };
 
   return (
-    <div className="row h-100">
+    <div className="row h-100 ">
       <div className="col-5">
         <ProjectsState>
           <ShowDataModal />
@@ -62,7 +62,7 @@ const ProjectsPage = () => {
               />
             </div>
           </Container>
-          <div id="project-List" className="mt-2 mx-5">
+          <div id="project-List" className="mt-2 mx-3">
             <ProjectList />
             <ErrorModal
               headline={errorMsg.header}

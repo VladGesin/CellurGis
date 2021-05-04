@@ -1,0 +1,12 @@
+.leaflet-control-Search {
+  background-image: url("./loupe.png");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  box-shadow: inset 0px 1px 0px 0px #ffffff;
+  border-radius: 6px;
+}
+
+.leaflet-control-Search:hover {
+  background-image: none;
+}
