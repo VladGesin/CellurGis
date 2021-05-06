@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Popup, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import { MdSettingsInputAntenna } from "react-icons/md";
 import MarkerClusterGroup from "react-leaflet-markercluster";
@@ -35,6 +35,14 @@ const MapSitesMarkers = ({ sitesArr: { sites, loading }, getSitesArr }) => {
                 key={site.site_name}
               >
                 <Popup>{site.site_name}</Popup>
+                <Tooltip
+                  direction="bottom"
+                  offset={[5, 15]}
+                  opacity={0.8}
+                  permanent
+                >
+                  {site.site_name}
+                </Tooltip>
               </Marker>
             );
           })}
