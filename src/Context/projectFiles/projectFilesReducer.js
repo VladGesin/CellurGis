@@ -9,11 +9,12 @@ const fileReducer = (state, action) => {
     case GET_FILES:
       return {
         files: action.payload,
-        loading: false,
+        // loading: false,
       };
     case CLOSE_MODAL:
       return {
         files: action.payload,
+        loading: true,
       };
     case CREATE_NEW_FILE:
       return {

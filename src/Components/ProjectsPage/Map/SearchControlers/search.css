@@ -1,0 +1,45 @@
+.leaflet-control-Search {
+}
+
+.leaflet-control-Search:hover {
+}
+
+.searchIcon {
+  margin-left: 2px;
+  background-color: aliceblue;
+  border-color: rgb(133, 133, 133);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+}
+.formSearchOnMap {
+  display: none;
+  width: 50%;
+}
+.searchIconBox:hover {
+}
+
+.filterItem {
+}
+
+.siteFilterdList {
+  margin-top: 2px;
+  list-style-type: none;
+  background-color: #f6f6f6;
+  text-decoration: none;
+  font-size: 14px;
+  color: black;
+  display: block;
+  border-radius: 5px;
+  width: 50%;
+}
+
+.siteFilterdList li:hover {
+  background-color: #eee;
+}
+.siteFilterdList li {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
+}
