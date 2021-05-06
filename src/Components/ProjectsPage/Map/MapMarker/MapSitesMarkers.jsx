@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ReactDOMServer from "react-dom/server";
-import axios from "axios";
 import { Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import { MdSettingsInputAntenna } from "react-icons/md";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import "leaflet/dist/leaflet.css"; // sass
 import "react-leaflet-markercluster/dist/styles.min.css"; // sass
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getSitesArr } from "../../../../Redux/actions/siteArrActions";
 
-export default function MapSitesMarkers() {
-  const [siteMarkers, setSiteMarkers] = useState([]);
-
+const MapSitesMarkers = ({ sitesArr: { sites, loading }, getSitesArr }) => {
   useEffect(() => {
-    getMarkers();
+    getSitesArr();
     // eslint-disable-next-line
   }, []);
 
@@ -23,27 +23,32 @@ export default function MapSitesMarkers() {
     html: iconHTML,
   });
 
-  const getMarkers = async () => {
-    axios.get("http://localhost:5000/apiv2/sites/map").then((res) => {
-      // console.log(res.data);
-      const markers = res.data.map((site) => {
-        return (
-          <Marker
-            position={[site.latitude, site.longitude]}
-            icon={customMarkerIcon}
-            key={site.site_name}
-          >
-            <Popup>{site.site_name}</Popup>
-          </Marker>
-        );
-      });
-      setSiteMarkers(markers);
-    });
-  };
-
   return (
     <div>
-      <MarkerClusterGroup>{siteMarkers}</MarkerClusterGroup>
+      <MarkerClusterGroup>
+        {sites.length > 0 &&
+          sites.map((site) => {
+            return (
+              <Marker
+                position={[site.latitude, site.longitude]}
+                icon={customMarkerIcon}
+                key={site.site_name}
+              >
+                <Popup>{site.site_name}</Popup>
+              </Marker>
+            );
+          })}
+      </MarkerClusterGroup>
     </div>
   );
-}
+};
+
+MapSitesMarkers.propTypes = {
+  sitesArr: PropTypes.object.isRequired,
+};
+
+const siteArrToProps = (state) => ({
+  sitesArr: state.sitesArr,
+});
+
+export default connect(siteArrToProps, { getSitesArr })(MapSitesMarkers);

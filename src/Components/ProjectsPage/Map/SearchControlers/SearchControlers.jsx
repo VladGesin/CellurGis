@@ -1,79 +1,88 @@
+import React, { useEffect, useState } from "react";
 import L from "leaflet";
 import { useMap } from "react-leaflet";
 import "font-awesome/css/font-awesome.min.css";
-import "./searchControlers.css";
+import "./search.css";
+import ReactDOMServer from "react-dom/server";
+import { AiOutlineSearch } from "react-icons/ai";
+import SearchFunc from "./SearchFunc";
 
-export default function SearchControlers() {
+const SearchControlers = () => {
+  const [mounted, setMounted] = useState(false);
+
   const map = useMap();
 
-  L.Control.Search = L.Control.extend({
-    options: {
-      position: "topleft",
-      collapsed: "true",
-    },
-    /*
-     * Leaflet calls the onAdd function when the control is added to the map:
-     *
-     *   control.addTo(map);
-     *   map.addControl(control);
-     */
-    onAdd: function (map) {
-      /*
-       * Create the DOM element that will contain the control. The leaflet-control-template
-       * CSS class is defined in the LeafletControlTemplate.css file.
-       */
+  useEffect(() => {
+    const searchIcon = () => {
+      L.Control.Search = L.Control.extend({
+        options: {
+          position: "topleft",
+          collapsed: "true",
+        },
 
-      const controlElementTag = "input";
-      const controlElementClass = "leaflet-control-Search";
-      const controlElement = L.DomUtil.create(
-        controlElementTag,
-        controlElementClass
-      );
-      controlElement.type = "button";
-      controlElement.style.width = "30px";
-      controlElement.style.height = "30px";
-      // Continue implementing the control here.
+        onAdd: function (map) {
+          const controlElementTag = "div";
+          const controlElementClass = "leaflet-control-Search";
+          const controlElement = L.DomUtil.create(
+            controlElementTag,
+            controlElementClass
+          );
 
-      /*
-       * The onAdd function must return the DOM element that contains the plugin
-       * control. Leaflet will add this element to the map.
-       */
+          //Search Icon
+          const iconSearch = ReactDOMServer.renderToString(
+            <AiOutlineSearch size={30} className="searchIcon" />
+          );
 
-      controlElement.onmouseover = function () {
-        controlElement.style.width = "100px";
-        controlElement.type = "input";
+          //Create Search Icon
+          const input = document.createElement("i");
+          input.innerHTML = iconSearch;
+          input.className = "searchIconBox";
+          controlElement.appendChild(input);
+          const formInput = document.createElement("input");
+          formInput.type = "form";
+          formInput.className = "formSearchOnMap";
+          controlElement.appendChild(formInput);
+          const siteFilterdList = document.createElement("ui");
+          siteFilterdList.className = "siteFilterdList";
+          controlElement.appendChild(siteFilterdList);
+
+          controlElement.onmouseover = function () {
+            input.style.display = "none";
+            formInput.style.display = "block";
+          };
+
+          controlElement.onmouseout = function () {
+            if (formInput.value === "") {
+              input.style.display = "flex";
+              formInput.style.display = "none";
+              siteFilterdList.innerHTML = "";
+            }
+          };
+          setMounted(true);
+          return controlElement;
+        },
+
+        onRemove: function (map) {
+          // Nothing to do here
+        },
+      });
+
+      L.control.Search = function (options) {
+        return new L.Control.Search(options);
       };
 
-      controlElement.onmouseout = function () {
-        controlElement.style.width = "30px";
-        controlElement.value = " ";
-        controlElement.type = "button";
-      };
-      return controlElement;
-    },
-    /*
-     * Leaflet calls the onRemove function when a control is removed from the map:
-     *
-     *   control.removeFrom(map);
-     *   map.removeControl(control);
-     */
-    onRemove: function (map) {
-      // Nothing to do here
-    },
-  });
-  /*
-   * The standard Leaflet plugin creation pattern is to implement a factory function that
-   * enables the creation of the plugin to be chained with other function calls:
-   *
-   *   L.leafletControlTemplate().addTo(map);
-   *
-   * The common convention is to name the factory function after the class of the control
-   * plugin but make the first letter lower case.
-   */
-  L.control.Search = function (options) {
-    return new L.Control.Search(options);
-  };
+      L.control.Search().addTo(map);
+      return null;
+    };
 
-  L.control.Search().addTo(map);
-  return null;
-}
+    searchIcon();
+    return () => {
+      return null;
+    };
+    // eslint-disable-next-line
+  }, [map]);
+
+  return mounted && <SearchFunc />;
+};
+
+export default SearchControlers;
