@@ -48,7 +48,7 @@ const SearchControlers = () => {
 
           controlElement.onmouseover = function () {
             input.style.display = "none";
-            formInput.style.display = "block";
+            formInput.style.display = "inline-block";
           };
 
           controlElement.onmouseout = function () {

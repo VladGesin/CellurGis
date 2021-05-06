@@ -14,6 +14,7 @@
 }
 .formSearchOnMap {
   display: none;
+  width: 50%;
 }
 .searchIconBox:hover {
 }
@@ -22,5 +23,23 @@
 }
 
 .siteFilterdList {
+  margin-top: 2px;
   list-style-type: none;
+  background-color: #f6f6f6;
+  text-decoration: none;
+  font-size: 14px;
+  color: black;
+  display: block;
+  border-radius: 5px;
+  width: 50%;
+}
+
+.siteFilterdList li:hover {
+  background-color: #eee;
+}
+.siteFilterdList li {
+  height: 100%;
+  width: 100%;
+  display: inline-block;
+  text-align: center;
 }
