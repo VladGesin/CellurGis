@@ -7,7 +7,7 @@ import Controlers from "./SearchControlers/SearchControlers";
 export default function MainMap(props) {
   return (
     <MapContainer
-      center={[31.931256, 34.85761]}
+      center={[31.996775, 35.279545]}
       zoom={10}
       maxZoom={18}
       scrollWheelZoom={true}
