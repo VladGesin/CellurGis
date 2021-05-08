@@ -1,7 +1,7 @@
 import { SITES_ARR_GET, SITES_ARR_LOADING, SITES_ARR_ERR } from "./types";
 import axios from "axios";
 
-export const getSitesArr = () => async (dispatch) => {
+export const mapSitesMarkers = () => async (dispatch) => {
   try {
     setLoading();
     axios.get("http://localhost:5000/apiv2/sites/map").then((res) => {
@@ -18,7 +18,7 @@ export const getSitesArr = () => async (dispatch) => {
   }
 };
 
-export const setLoading = () => {
+export const setLoading = () => async (dispatch) => {
   return {
     type: SITES_ARR_LOADING,
   };

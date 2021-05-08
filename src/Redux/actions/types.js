@@ -1,3 +1,18 @@
 export const SITES_ARR_GET = "SITES_GET";
 export const SITES_ARR_LOADING = "SITES_ARR_LOADING";
 export const SITES_ARR_ERR = "SITES_ARR_ERR";
+
+export const GET_PROJECTS = "GET_PROJECTS";
+export const DELETE_PROJECT = "DELETE_PROJECT";
+export const OPEN_PROJECT_MODAL = "OPEN_PROJECT_MODAL";
+export const CLOSE_PROJECT_MODAL = "CLOSE_PROJECT_MODAL";
+export const CREATE_NEW_PROJECT = "CREATE_NEW_PROJECT";
+
+export const GET_FILES = "GET_FILES";
+export const CLOSE_MODAL = "CLOSE_MODAL";
+export const CREATE_NEW_FILE = "CREATE_NEW_FILE";
+export const DELETE_FILE = "DELETE_FILE";
+
+export const GET_POINTS = "GET_POINTS";
+export const DELETE_POINTS = "DELETE_POINTS";
+export const UPDATE_REF_RSRP = "UPDATE_REF_RSRP";

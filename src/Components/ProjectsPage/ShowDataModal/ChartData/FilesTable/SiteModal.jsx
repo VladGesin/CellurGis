@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Tabs from "react-bootstrap/Tabs";
@@ -6,25 +6,34 @@ import Tab from "react-bootstrap/Tab";
 import ChartModal from "../ChartModal/ChartModal";
 import MainMap from "../../../Map/MainMap";
 import MapDriveTestPoints from "../../../Map/MapMarker/MapDriveTestPoints";
-import MapPointsContaxt from "../../../../../Context/mapPoints/mapPointsContaxt";
 import "../../../Map/MainMap.css";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+  setMapData,
+  deleteMapData,
+} from "../../../../../Redux/actions/mapDriveTestPoints";
 
-export default function SiteModal({ filename, project_id, site }) {
+const SiteModal = ({
+  mapDriveTestPoints,
+  filename,
+  project_id,
+  site,
+  setMapData,
+  deleteMapData,
+}) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [show, setShow] = useState(false);
   const [key, setKey] = useState("Distance_From_Site");
-  const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
     const fetchData = async () => {
-      await mapPointsContaxt.setMapData(filename, project_id, site.site_id);
+      await setMapData(filename, project_id, site.site_id);
     };
-
     if (show) fetchData();
-
     return () => {
-      mapPointsContaxt.deleteMapData();
+      deleteMapData();
     };
     // eslint-disable-next-line
   }, [show]);
@@ -88,4 +97,18 @@ export default function SiteModal({ filename, project_id, site }) {
       </Modal>
     </>
   );
-}
+};
+
+SiteModal.propTypes = {
+  mapDriveTestPoints: PropTypes.object.isRequired,
+  setMapData: PropTypes.func.isRequired,
+  deleteMapData: PropTypes.func.isRequired,
+};
+
+const dtPointsToProps = (state) => ({
+  mapDriveTestPoints: state.mapDriveTestPoints,
+});
+
+export default connect(dtPointsToProps, { setMapData, deleteMapData })(
+  SiteModal
+);

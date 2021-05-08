@@ -1,20 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Spinner from 'react-bootstrap/Spinner';
-import DtTableExample from './DtTableExample';
-import SiteTableExample from './SiteTableExample';
-import ProjectsContext from '../../../Context/projects/projectsContext';
+import React, { useState, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Spinner from "react-bootstrap/Spinner";
+import DtTableExample from "./DtTableExample";
+import SiteTableExample from "./SiteTableExample";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 //Need find soluthin on duplicated file names
 
-export default function UploadFile({ aplyBtn, type, header }) {
-  const projectsContext = useContext(ProjectsContext);
-
+const UploadFile = ({
+  aplyBtn,
+  type,
+  header,
+  projectList: { openModalId },
+}) => {
   const [show, setShow] = useState(false);
   const [file, setFile] = useState({
-    fileName: '',
+    fileName: "",
     file: [],
   });
   const [spinner, setSpinner] = useState(false);
@@ -22,7 +26,7 @@ export default function UploadFile({ aplyBtn, type, header }) {
 
   //Check file Type
   useEffect(() => {
-    if (file.file.type !== 'text/csv' || file.fileName.length === 0)
+    if (file.file.type !== "text/csv" || file.fileName.length === 0)
       setValidFile(false);
     else setValidFile(true);
   }, [file]);
@@ -34,7 +38,7 @@ export default function UploadFile({ aplyBtn, type, header }) {
       setSpinner(false);
       setValidFile(true);
       setFile({
-        fileName: '',
+        fileName: "",
         file: [],
       });
     }
@@ -47,9 +51,9 @@ export default function UploadFile({ aplyBtn, type, header }) {
   const handleUpload = async () => {
     setSpinner(true);
     const formData = new FormData();
-    formData.append('file', file.file);
-    formData.append('filename', file.fileName);
-    formData.append('project_id', projectsContext.openModalId);
+    formData.append("file", file.file);
+    formData.append("filename", file.fileName);
+    formData.append("project_id", openModalId);
     await aplyBtn(formData);
     handleClose();
   };
@@ -68,7 +72,7 @@ export default function UploadFile({ aplyBtn, type, header }) {
           <div className="mb-3">
             <Form.Group controlId="formBasicText">
               <Form.Label>
-                File Name , <strong> Upload Only CSV </strong>{' '}
+                File Name , <strong> Upload Only CSV </strong>{" "}
               </Form.Label>
               <Form.Control
                 onChange={(e) =>
@@ -93,8 +97,8 @@ export default function UploadFile({ aplyBtn, type, header }) {
                 />
               </Form.File>
             </Form.Group>
-            {type === 'UploadDT' && <DtTableExample />}
-            {type === 'SiteDB' && <SiteTableExample />}
+            {type === "UploadDT" && <DtTableExample />}
+            {type === "SiteDB" && <SiteTableExample />}
           </div>
         </Modal.Body>
         <Modal.Footer className="justify-content-start">
@@ -118,4 +122,14 @@ export default function UploadFile({ aplyBtn, type, header }) {
       </Modal>
     </>
   );
-}
+};
+
+UploadFile.prototype = {
+  projectList: PropTypes.object.isRequired,
+};
+
+const projectListToProps = (state) => ({
+  projectList: state.projectList,
+});
+
+export default connect(projectListToProps)(UploadFile);

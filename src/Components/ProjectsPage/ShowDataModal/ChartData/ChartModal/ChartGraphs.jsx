@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
-import LineChart from './ChartFiles/LineChart';
-import BarChart from './ChartFiles/BarChart';
-import HoBarChart from './ChartFiles/HoBarChart';
-import Form from 'react-bootstrap/Form';
-import MapPointsContaxt from '../../../../../Context/mapPoints/mapPointsContaxt';
+import React, { useState, useEffect } from "react";
+import LineChart from "./ChartFiles/LineChart";
+import BarChart from "./ChartFiles/BarChart";
+import HoBarChart from "./ChartFiles/HoBarChart";
+import Form from "react-bootstrap/Form";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { updateRefRsrp } from "../../../../../Redux/actions/mapDriveTestPoints";
 
-export default function ChartGraphs({ siteData }) {
+const ChartGraphs = ({ mapDriveTestPoints, siteData, updateRefRsrp }) => {
   const [rsrpRef, setRsrpRef] = useState(-92);
   const [greaterCount, setGreaterCount] = useState([]);
-  const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
     getGreaterCount();
@@ -49,10 +50,10 @@ export default function ChartGraphs({ siteData }) {
             type="text"
             placeholder={rsrpRef}
             onKeyPress={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 if (e.target.value < 0) {
                   setRsrpRef(e.target.value);
-                  mapPointsContaxt.updateRefRsrp(e.target.value);
+                  updateRefRsrp(e.target.value);
                 }
               }
             }}
@@ -68,4 +69,15 @@ export default function ChartGraphs({ siteData }) {
       />
     </>
   );
-}
+};
+
+ChartGraphs.propTypes = {
+  mapDriveTestPoints: PropTypes.object.isRequired,
+  updateRefRsrp: PropTypes.func.isRequired,
+};
+
+const dtPointsToProps = (state) => ({
+  mapDriveTestPoints: state.mapDriveTestPoints,
+});
+
+export default connect(dtPointsToProps, { updateRefRsrp })(ChartGraphs);

@@ -1,18 +1,32 @@
-import React, { useEffect, useContext } from 'react';
-import ProjectsContext from '../../../Context/projects/projectsContext';
-import ProjectCard from './ProjectCard';
+import React, { useEffect } from "react";
+import ProjectCard from "./ProjectCard";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { getProjectsListFromApi } from "../../../Redux/actions/projectsList";
 
-export default function ProjectList() {
-  const projectContext = useContext(ProjectsContext);
+const ProjectList = ({ projectList: { projects }, getProjectsListFromApi }) => {
   useEffect(() => {
-    projectContext.getProjectsListFromApi();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    getProjectsListFromApi();
+    // eslint-disable-next-line
   }, []);
   return (
     <>
-      {projectContext.projects.map((project) => {
+      {projects.map((project) => {
         return <ProjectCard project={project} key={project.project_id} />;
       })}
     </>
   );
-}
+};
+
+ProjectList.prototype = {
+  projectList: PropTypes.object.isRequired,
+  getProjectsListFromApi: PropTypes.func.isRequired,
+};
+
+const projectListToProps = (state) => ({
+  projectList: state.projectList,
+});
+
+export default connect(projectListToProps, {
+  getProjectsListFromApi,
+})(ProjectList);

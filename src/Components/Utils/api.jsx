@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 class API {
   constructor(base_url) {
@@ -27,7 +27,7 @@ class API {
 
   delete = async (path, data) => {
     const response_data = await axios({
-      method: 'DELETE',
+      method: "DELETE",
       url: `${this.base_url}${path}`,
       data,
     });
@@ -36,6 +36,7 @@ class API {
   };
 }
 
-const api = new API('http://localhost:5000/');
+const api = new API("http://localhost:5000/");
 
+// export default api;
 export default api;

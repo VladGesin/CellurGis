@@ -1,11 +1,20 @@
-import { GET_FILES, CLOSE_MODAL, DELETE_FILE, CREATE_NEW_FILE } from '../types';
+import {
+  GET_FILES,
+  CLOSE_MODAL,
+  DELETE_FILE,
+  CREATE_NEW_FILE,
+} from "../actions/types";
 
-const fileReducer = (state, action) => {
+const initialState = {
+  files: [],
+  loading: true,
+};
+
+// eslint-disable-next-line
+export default (state = initialState, action) => {
   switch (action.type) {
     default:
-      return {
-        state,
-      };
+      return state;
     case GET_FILES:
       return {
         files: action.payload,
@@ -28,5 +37,3 @@ const fileReducer = (state, action) => {
       };
   }
 };
-
-export default fileReducer;

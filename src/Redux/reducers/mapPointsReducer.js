@@ -1,6 +1,15 @@
-import { GET_POINTS, DELETE_POINTS, UPDATE_REF_RSRP } from '../types';
+import { GET_POINTS, DELETE_POINTS, UPDATE_REF_RSRP } from "../actions/types";
 
-const mapPointsReducer = (state, action) => {
+const initialState = {
+  filename: "",
+  project_id: null,
+  site: "",
+  rsrpRef: -92,
+  markers: [],
+};
+
+// eslint-disable-next-line
+export default (state = initialState, action) => {
   switch (action.type) {
     default:
       return {
@@ -16,19 +25,16 @@ const mapPointsReducer = (state, action) => {
       };
     case DELETE_POINTS:
       return {
-        filename: '',
+        filename: "",
         project_id: null,
-        site: '',
+        site: "",
         rsrpRef: -92,
         markers: [],
       };
     case UPDATE_REF_RSRP:
-      console.log(action);
       return {
         ...state,
         rsrpRef: action.rsrpRef,
       };
   }
 };
-
-export default mapPointsReducer;

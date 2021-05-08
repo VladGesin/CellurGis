@@ -1,39 +1,46 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useState } from "react";
 import UploadFile from "../../UploadFile/UploadFile";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import FileTable from "./FilesTable/FileTable";
-import ProjectFilesContaxt from "../../../../Context/projectFiles/projectFilesContaxt";
-import ProjectsContext from "../../../../Context/projects/projectsContext";
 import ErrorModal from "../../ErrorModal/ErrorMsg";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import {
+  getProjectFiles,
+  closeModal,
+  uploadFile,
+} from "../../../../Redux/actions/projectFiles";
 
-export default function ChartPage({ project }) {
-  const projectFilesContaxt = useContext(ProjectFilesContaxt);
-  const projectsContext = useContext(ProjectsContext);
+const ChartPage = ({
+  projectList: { openModalId },
+  getProjectFiles,
+  closeModal,
+  uploadFile,
+}) => {
   const [errorMsg, setErrorMsg] = useState({
     msg: "",
     header: "",
     type: "",
   });
   useEffect(() => {
-    projectFilesContaxt.getProjectFiles(project);
+    getProjectFiles(openModalId);
     return () => {
-      projectFilesContaxt.closeModal();
+      closeModal();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line
   }, []);
 
   const onApplyBtn = async (data) => {
-    await projectFilesContaxt
-      .uploadFile(data)
+    await uploadFile(data)
       .then(() => {
         setErrorMsg({
           msg: "DriveTest Uploud Successfully",
           header: "DriveTest Uploud",
           type: "alert-success",
         });
-        projectFilesContaxt.getProjectFiles(projectsContext.openModalId);
+        getProjectFiles(openModalId);
       })
       .catch((error) => {
         setErrorMsg({
@@ -53,7 +60,7 @@ export default function ChartPage({ project }) {
     <Container className="mt-2" fluid>
       <Row className="d-flex">
         <Col className="">
-          <h2>Project ID: {project} Files Uploaded</h2>
+          <h2>Project ID: {openModalId} Files Uploaded</h2>
         </Col>
         <div className="ml-auto mr-1">
           <UploadFile
@@ -76,4 +83,21 @@ export default function ChartPage({ project }) {
       </Row>
     </Container>
   );
-}
+};
+
+ChartPage.prototype = {
+  projectList: PropTypes.object.isRequired,
+  getProjectFiles: PropTypes.func.isRequired,
+  closeModal: PropTypes.func.isRequired,
+  uploadFile: PropTypes.func.isRequired,
+};
+
+const projectFilesToProps = (state) => ({
+  projectList: state.projectList,
+});
+
+export default connect(projectFilesToProps, {
+  getProjectFiles,
+  closeModal,
+  uploadFile,
+})(ChartPage);

@@ -1,17 +1,20 @@
-import React, { useContext } from 'react';
-import Table from 'react-bootstrap/Table';
-import TableRow from './TableRow';
-import ProjectFilesContaxt from '../../../../../Context/projectFiles/projectFilesContaxt';
-import Spinner from 'react-bootstrap/Spinner'
+import React from "react";
+import Table from "react-bootstrap/Table";
+import TableRow from "./TableRow";
+import Spinner from "react-bootstrap/Spinner";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
-export default function FileTable() {
-  const projectFilesContaxt = useContext(ProjectFilesContaxt);
-
-  if(projectFilesContaxt.loading){
-    return <div className='d-flex h-100'><Spinner animation="border" className='mx-auto'/></div>;
+const FileTable = ({ projectFiles: { files, loading } }) => {
+  if (loading) {
+    return (
+      <div className="d-flex h-100">
+        <Spinner animation="border" className="mx-auto" />
+      </div>
+    );
   }
 
-  if (projectFilesContaxt.files.length === 0)
+  if (files.length === 0)
     return <h2>No files in the database related to the project</h2>;
 
   return (
@@ -28,7 +31,7 @@ export default function FileTable() {
           </tr>
         </thead>
         <tbody>
-          {projectFilesContaxt.files.map((file, index) => {
+          {files.map((file, index) => {
             return (
               <TableRow
                 filename={file.file_name}
@@ -44,4 +47,14 @@ export default function FileTable() {
       </Table>
     </div>
   );
-}
+};
+
+FileTable.prototype = {
+  projectFiles: PropTypes.object.isRequired,
+};
+
+const projectFilesToProps = (state) => ({
+  projectFiles: state.projectFiles,
+});
+
+export default connect(projectFilesToProps)(FileTable);
