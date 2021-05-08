@@ -1,18 +1,18 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import "leaflet-canvas-marker";
 import L from "leaflet";
-import MapPointsContaxt from "../../../../Context/mapPoints/mapPointsContaxt";
 import GreenDot from "./MarkerPng/green.png";
 import RedDot from "./MarkerPng/red.png";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-export default function MapDriveTestPoints() {
+const MapDriveTestPoints = ({ mapDriveTestPoints }) => {
   const map = useMap();
-  const mapPointsContaxt = useContext(MapPointsContaxt);
 
   useEffect(() => {
     if (!map) return;
-    if (mapPointsContaxt.markers.length === 0) return;
+    if (mapDriveTestPoints.markers.length === 0) return;
     var ciLayer = L.canvasIconLayer({}).addTo(map);
 
     // ciLayer.addOnClickListener(function (e, data) {
@@ -35,10 +35,10 @@ export default function MapDriveTestPoints() {
 
     let markers = [];
     // eslint-disable-next-line
-    mapPointsContaxt.markers.map((point, i) => {
+    mapDriveTestPoints.markers.map((point, i) => {
       markers.push(
         L.marker([point.latitude, point.longitude], {
-          icon: point.rsrp >= mapPointsContaxt.rsrpRef ? iconRed : iconGreen,
+          icon: point.rsrp >= mapDriveTestPoints.rsrpRef ? iconRed : iconGreen,
         }).bindPopup(
           `<ul>
                 <li>dist from border: ${point.dist_from_ref / 1000} Km</li>
@@ -52,7 +52,17 @@ export default function MapDriveTestPoints() {
     if (markers.length > 0) ciLayer.addLayers(markers);
     map.setView(markers[0]._latlng, 13);
     // eslint-disable-next-line
-  }, [map, mapPointsContaxt.markers, mapPointsContaxt.rsrpRef]);
+  }, [map, mapDriveTestPoints.markers, mapDriveTestPoints.rsrpRef]);
 
   return null;
-}
+};
+
+MapDriveTestPoints.propTypes = {
+  mapDriveTestPoints: PropTypes.object.isRequired,
+};
+
+const dtPointsToProps = (state) => ({
+  mapDriveTestPoints: state.mapDriveTestPoints,
+});
+
+export default connect(dtPointsToProps)(MapDriveTestPoints);

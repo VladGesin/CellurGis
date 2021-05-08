@@ -1,15 +1,15 @@
-import React, { useState, useContext } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import ProjectsContext from '../../../Context/projects/projectsContext';
+import React, { useState } from "react";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { createNewProject } from "../../../Redux/actions/projectsList";
 
-export default function NewProjectModal() {
-  const [projectName, setProjectName] = useState('');
+const NewProjectModal = ({ createNewProject }) => {
+  const [projectName, setProjectName] = useState("");
   const [showErr, setErr] = useState(false);
   const [newProjectBtn, setNewProjectBtn] = useState(false);
-
-  const projectContext = useContext(ProjectsContext);
 
   const handleClose = () => {
     setErr(false);
@@ -19,10 +19,10 @@ export default function NewProjectModal() {
   const handleNewProject = async () => {
     if (projectName.length > 0) {
       setErr(false);
-      projectContext.createNewProject(projectName);
+      createNewProject(projectName);
       setNewProjectBtn(false);
       setErr(false);
-      setProjectName('');
+      setProjectName("");
     } else {
       setErr(true);
     }
@@ -31,7 +31,6 @@ export default function NewProjectModal() {
   return (
     <div>
       <Button onClick={() => setNewProjectBtn(true)}>New Project</Button>
-
       <Modal show={newProjectBtn} onHide={handleClose} centered>
         <Modal.Header closeButton>
           <Modal.Title>Create New Project</Modal.Title>
@@ -47,7 +46,7 @@ export default function NewProjectModal() {
                 type="text"
                 placeholder="Enter Project Name"
               />
-              {showErr && <p className="text-danger"> Input Name</p>}
+              {showErr && <p className="text-danger "> Input Name</p>}
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -62,4 +61,12 @@ export default function NewProjectModal() {
       </Modal>
     </div>
   );
-}
+};
+
+NewProjectModal.prototype = {
+  createNewProject: PropTypes.func.isRequired,
+};
+
+export default connect(null, {
+  createNewProject,
+})(NewProjectModal);

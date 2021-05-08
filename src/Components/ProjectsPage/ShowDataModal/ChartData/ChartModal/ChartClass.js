@@ -1,4 +1,4 @@
-import api from '../../../../Utils/api';
+import api from "../../../../Utils/api";
 
 class Chart {
   constructor(table, project_id, filename, site) {
@@ -19,12 +19,12 @@ class Chart {
       )
       .then((res) => {
         return res.data.map((dist) => {
-          if (this.table === 'site') {
+          if (this.table === "site") {
             if (dist.dist_from_site == null) {
               return 0;
             }
             return dist.dist_from_site;
-          } else if (this.table === 'refLayer') return dist.dist_from_ref;
+          } else if (this.table === "refLayer") return dist.dist_from_ref;
           else return null;
         });
       });
@@ -127,11 +127,11 @@ class Chart {
   }
 
   setDistLabels(distances) {
-    if (this.table === 'refLayer') {
+    if (this.table === "refLayer") {
       return distances.map((dist) => {
-        if (dist < 999) return dist.toString().concat('M');
+        if (dist < 999) return dist.toString().concat("M");
         else {
-          return (dist / 1000).toString().concat('Km');
+          return (dist / 1000).toString().concat("Km");
         }
       });
     } else
@@ -139,7 +139,7 @@ class Chart {
         if (dist === 0) {
           return 0;
         }
-        return dist.toString().concat('Km');
+        return dist.toString().concat("Km");
       });
   }
 }

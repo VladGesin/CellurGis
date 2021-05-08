@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import ChartFactory from './ChartFactory';
-import Spinner from 'react-bootstrap/Spinner';
-import ChartGraphs from './ChartGraphs';
+import React, { useState, useEffect } from "react";
+import ChartFactory from "./ChartFactory";
+import Spinner from "react-bootstrap/Spinner";
+import ChartGraphs from "./ChartGraphs";
 
 export default function ChartModal({ btnText, project_id, filename, site }) {
   const [spinner, setSpinner] = useState(true);
   const [charts, setCharts] = useState({
-    site_id: '',
+    site_id: "",
     dist: [],
     maxRsrp: [],
     minRsrp: [],
     avgRsrp: [],
-    countRsrp: '',
+    countRsrp: "",
     labels: [],
     obj: null,
   });

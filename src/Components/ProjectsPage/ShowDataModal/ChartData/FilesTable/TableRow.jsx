@@ -1,49 +1,59 @@
-import React, { useContext } from 'react';
-import DeletetModal from '../../../DeleteData/DeleteModal';
-import ProjectFilesContaxt from '../../../../../Context/projectFiles/projectFilesContaxt';
-import SiteModal from './SiteModal';
-import MapPointsState from '../../../../../Context/mapPoints/mapPointsState';
+import React from "react";
+import DeletetModal from "../../../DeleteData/DeleteModal";
+import SiteModal from "./SiteModal";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { deleteFile } from "../../../../../Redux/actions/projectFiles";
 
-export default function TableRow({
+const TableRow = ({
   filename,
   index,
   project_id,
   sites,
   countPoints,
-}) {
-  const projectFilesContaxt = useContext(ProjectFilesContaxt);
-
+  projectFiles: { loading },
+  deleteFile,
+}) => {
   return (
     <>
-      <MapPointsState>
-        <tr>
-          <td>{index + 1}</td>
-          <td>{filename}</td>
-          <td>
-            {sites.length > 0 &&
-              sites.map((site) => {
-                return (
-                  <SiteModal
-                    filename={filename}
-                    project_id={project_id}
-                    site={site}
-                    key={filename + site.site_id}
-                  />
-                );
-              })}
-          </td>
-          <td>{countPoints}</td>
-          <td className="justify-content-centers">
-            <DeletetModal
-              applyBtn={() => {
-                projectFilesContaxt.deleteFile(project_id, filename);
-              }}
-              btnStatus={projectFilesContaxt.loading}
-              header={'File'}
-            />
-          </td>
-        </tr>
-      </MapPointsState>
+      <tr>
+        <td>{index + 1}</td>
+        <td>{filename}</td>
+        <td>
+          {sites.length > 0 &&
+            sites.map((site) => {
+              return (
+                <SiteModal
+                  filename={filename}
+                  project_id={project_id}
+                  site={site}
+                  key={filename + site.site_id}
+                />
+              );
+            })}
+        </td>
+        <td>{countPoints}</td>
+        <td className="justify-content-centers">
+          <DeletetModal
+            applyBtn={() => {
+              deleteFile(project_id, filename);
+            }}
+            btnStatus={loading}
+            header={"File"}
+          />
+        </td>
+      </tr>
     </>
   );
-}
+};
+
+TableRow.prototype = {
+  projectFiles: PropTypes.object.isRequired,
+  deleteFile: PropTypes.func.isRequired,
+};
+
+const projectFilesToProps = (state) => ({
+  projectFiles: state.projectFiles,
+});
+
+export default connect(projectFilesToProps, { deleteFile })(TableRow);

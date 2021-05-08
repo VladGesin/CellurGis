@@ -8,11 +8,11 @@ import "leaflet/dist/leaflet.css"; // sass
 import "react-leaflet-markercluster/dist/styles.min.css"; // sass
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { getSitesArr } from "../../../../Redux/actions/siteArrActions";
+import { mapSitesMarkers } from "../../../../Redux/actions/mapSitesMarkers";
 
-const MapSitesMarkers = ({ sitesArr: { sites, loading }, getSitesArr }) => {
+const MapSitesMarkers = ({ sitesArr: { sites, loading }, mapSitesMarkers }) => {
   useEffect(() => {
-    getSitesArr();
+    mapSitesMarkers();
     // eslint-disable-next-line
   }, []);
 
@@ -53,10 +53,11 @@ const MapSitesMarkers = ({ sitesArr: { sites, loading }, getSitesArr }) => {
 
 MapSitesMarkers.propTypes = {
   sitesArr: PropTypes.object.isRequired,
+  mapSitesMarkers: PropTypes.func.isRequired,
 };
 
 const siteArrToProps = (state) => ({
   sitesArr: state.sitesArr,
 });
 
-export default connect(siteArrToProps, { getSitesArr })(MapSitesMarkers);
+export default connect(siteArrToProps, { mapSitesMarkers })(MapSitesMarkers);

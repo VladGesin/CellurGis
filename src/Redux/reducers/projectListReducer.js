@@ -4,14 +4,18 @@ import {
   OPEN_PROJECT_MODAL,
   CLOSE_PROJECT_MODAL,
   CREATE_NEW_PROJECT,
-} from '../types';
+} from "../actions/types";
 
-const projectReducer = (state, action) => {
+const initialState = {
+  projects: [],
+  openModalId: null,
+};
+
+// eslint-disable-next-line
+export default (state = initialState, action) => {
   switch (action.type) {
     default:
-      return {
-        state,
-      };
+      return state;
     case GET_PROJECTS:
       return {
         ...state,
@@ -41,5 +45,3 @@ const projectReducer = (state, action) => {
       };
   }
 };
-
-export default projectReducer;
