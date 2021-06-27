@@ -5,7 +5,7 @@ export const setMapData = (filename, project_id, site) => async (dispatch) => {
   try {
     axios
       .get(
-        `http://localhost:5000/apiv2/getmappoints/${site}/${project_id}/${filename}`
+        `${process.env.REACT_APP_AXIOS_IP}/apiv2/getmappoints/${site}/${project_id}/${filename}`
       )
       .then((res) => {
         dispatch({

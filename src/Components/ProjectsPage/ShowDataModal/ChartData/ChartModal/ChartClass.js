@@ -15,7 +15,7 @@ class Chart {
   async getDistance() {
     const res = await api
       .get(
-        `apiv1/getsitedistances/${this.site_id}/${this.project_id}/${this.filename}/${this.table}`
+        `/apiv1/getsitedistances/${this.site_id}/${this.project_id}/${this.filename}/${this.table}`
       )
       .then((res) => {
         return res.data.map((dist) => {
@@ -37,7 +37,7 @@ class Chart {
       distances.map(async (dist) => {
         const result = await api
           .get(
-            `apiv1/getmaxrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+            `/apiv1/getmaxrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
           )
           .then((res) => {
             return res.data.map((max) => {
@@ -55,7 +55,7 @@ class Chart {
       distances.map(async (dist) => {
         const result = await api
           .get(
-            `apiv1/getminrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+            `/apiv1/getminrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
           )
           .then((res) => {
             return res.data.map((min) => {
@@ -74,7 +74,7 @@ class Chart {
       distances.map(async (dist) => {
         const result = await api
           .get(
-            `apiv1/getavgrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+            `/apiv1/getavgrsrpdistance/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
           )
           .then((res) => {
             return res.data.map((avg) => {
@@ -93,7 +93,7 @@ class Chart {
         distances.map(async (dist) => {
           const result = await api
             .get(
-              `apiv1/countrsrp/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+              `/apiv1/countrsrp/${this.site_id}/${dist}/${this.project_id}/${this.filename}/${this.table}`
             )
             .then((res) => {
               return res.data.map((count) => {
@@ -113,7 +113,7 @@ class Chart {
       distances.map(async (dist) => {
         const result = await api
           .get(
-            `apiv1/countrsrpgreater/${this.site_id}/${rsrp}/${dist}/${this.project_id}/${this.filename}/${this.table}`
+            `/apiv1/countrsrpgreater/${this.site_id}/${rsrp}/${dist}/${this.project_id}/${this.filename}/${this.table}`
           )
           .then((res) => {
             return res.data.map((count) => {

@@ -4,12 +4,14 @@ import axios from "axios";
 export const mapSitesMarkers = () => async (dispatch) => {
   try {
     setLoading();
-    axios.get("http://localhost:5000/apiv2/sites/map").then((res) => {
-      dispatch({
-        type: SITES_ARR_GET,
-        payload: res.data,
+    axios
+      .get(`${process.env.REACT_APP_AXIOS_IP}/apiv2/sites/map`)
+      .then((res) => {
+        dispatch({
+          type: SITES_ARR_GET,
+          payload: res.data,
+        });
       });
-    });
   } catch (error) {
     dispatch({
       type: SITES_ARR_ERR,

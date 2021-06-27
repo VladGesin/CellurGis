@@ -12,7 +12,7 @@ const user_id = "1c9d2f2d-af8a-4be7-bf06-86295e6e3001";
 
 export const getProjectsListFromApi = () => async (dispatch) => {
   axios
-    .get(`http://localhost:5000/apiv1/getuserprojects/${user_id}`)
+    .get(`${process.env.REACT_APP_AXIOS_IP}/apiv1/getuserprojects/${user_id}`)
     .then((res) =>
       dispatch({
         type: GET_PROJECTS,
@@ -23,7 +23,7 @@ export const getProjectsListFromApi = () => async (dispatch) => {
 
 export const deleteProjectFromApi = (project_id) => async (dispatch) => {
   axios
-    .delete(`http://localhost:5000/apiv1/deleteproject`, {
+    .delete(`${process.env.REACT_APP_AXIOS_IP}/apiv1/deleteproject`, {
       data: {
         project_id: project_id,
       },
@@ -38,7 +38,7 @@ export const deleteProjectFromApi = (project_id) => async (dispatch) => {
 
 export const createNewProject = (projectName) => async (dispatch) => {
   axios
-    .post("http://localhost:5000/apiv1/createnewproject", {
+    .post(`${process.env.REACT_APP_AXIOS_IP}/apiv1/createnewproject`, {
       project_name: projectName,
       user_id: user_id,
     })

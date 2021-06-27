@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const getProjectFiles = (project) => async (dispatch) => {
   const file_names = await axios
-    .get(`http://localhost:5000/apiv1/projectfilenames/${project}`)
+    .get(`${process.env.REACT_APP_AXIOS_IP}/apiv1/projectfilenames/${project}`)
     .then((res) => {
       return res.data;
     });
@@ -12,7 +12,7 @@ export const getProjectFiles = (project) => async (dispatch) => {
     file_names.map(async (file) => {
       const data = await axios
         .get(
-          `http://localhost:5000/apiv2/getfilesdata/${project}/${file.file_name}`
+          `${process.env.REACT_APP_AXIOS_IP}/apiv2/getfilesdata/${project}/${file.file_name}`
         )
         .then((res) => {
           // console.log(res.data);
@@ -41,7 +41,7 @@ export const closeModal = () => (dispatch) => {
 
 export const deleteFile = (project_id, filename) => async (dispatch) => {
   axios
-    .delete(`http://localhost:5000/apiv1/deletefile`, {
+    .delete(`${process.env.REACT_APP_AXIOS_IP}/apiv1/deletefile`, {
       data: {
         project_id: project_id,
         filename: filename,
@@ -57,7 +57,7 @@ export const deleteFile = (project_id, filename) => async (dispatch) => {
 
 export const uploadFile = (formData) => async (dispatch) => {
   await axios
-    .post("http://localhost:5000/apiv1/csv/newdtfile", formData, {})
+    .post(`${process.env.REACT_APP_AXIOS_IP}/apiv1/csv/newdtfile`, formData, {})
     .then(() => {
       dispatch({
         type: CREATE_NEW_FILE,

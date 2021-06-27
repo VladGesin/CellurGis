@@ -36,7 +36,7 @@ class API {
   };
 }
 
-const api = new API("http://localhost:5000/");
+const api = new API(`${process.env.REACT_APP_AXIOS_IP}`);
 
 // export default api;
 export default api;

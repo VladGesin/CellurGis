@@ -12,6 +12,7 @@ RUN npm run build
 # production environment
 FROM nginx:stable-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
+ENV REACT_APP_AXIOS_IP = "http://10.203.15.203:5000"
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]   
 

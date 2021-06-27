@@ -4,6 +4,7 @@ import { Switch, BrowserRouter as Router } from "react-router-dom";
 import Routes from "./Components/Routes/Routes";
 import { Provider } from "react-redux";
 import store from "./Redux/store";
+require("dotenv").config();
 
 //Use HashRouer is Build wont work
 

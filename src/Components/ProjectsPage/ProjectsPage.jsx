@@ -19,7 +19,11 @@ const ProjectsPage = () => {
 
   const uploadDataBase = async (databaseFile) => {
     await axios
-      .post("http://localhost:5000/apiv2/csv/sitedatabase", databaseFile, {})
+      .post(
+        `${process.env.REACT_APP_AXIOS_IP}/apiv2/csv/sitedatabase`,
+        databaseFile,
+        {}
+      )
       .then((res) => {
         setErrorMsg({
           msg: res.data,
